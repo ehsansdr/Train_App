@@ -7,17 +7,32 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update # Or create, none, validate, etc.  'update' is good for development
+      ddl-auto: update # Or create, none, validate, etc.  'validate' is good for liquibase
     show-sql: true  # Optional: Show SQL in console (for debugging)
     properties:
       hibernate.format_sql: true # Optional: Format SQL in logs
+
+
   liquibase:
-    change-log: classpath:/db/changelog/db.changelog-master.yaml
-  # Optional - If you want to configure a naming strategy for your tables/columns
+    enabled: true
+    change-log: /db/changelog/db.yml
+    #    searchPath: classpath:/db/scripts
+
+
+
+
+    # Optional - If you want to configure a naming strategy for your tables/columns
   # jpa:
   #   hibernate:
   #     naming:
   #       physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl # Or a custom strategy
+
+  cloud:
+    compatibility-verifier:
+      enabled: false
+
+
+
 
 server:
   port: 8080 # Or your preferred port
@@ -25,6 +40,7 @@ server:
 # Logging configuration (optional)
 logging:
   level:
+    liquibase: DEBUG
     root: INFO  # Or DEBUG for more detailed output
     org.hibernate.SQL: DEBUG # To see SQL statements
     org.hibernate.type.descriptor.sql: TRACE # To see data binding
