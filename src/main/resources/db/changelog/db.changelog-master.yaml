@@ -1,0 +1,17 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: your_username
+      changes:
+        - createTable:
+            tableName: example_table
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true  # Ensure it's the primary key
+              - column:
+                  name: name
+                  type: varchar(255)
