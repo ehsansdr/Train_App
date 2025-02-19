@@ -3,10 +3,13 @@ package com.example.trainproject.Model;
 
 import com.example.trainproject.Constant.OrderStatus;
 import com.example.trainproject.Repository.OrderRepository;
+import com.example.trainproject.Service.OrderService;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.context.event.EventListener;
+import org.springframework.data.annotation.CreatedBy;
 
 import java.time.ZonedDateTime;
 import java.util.Random;
@@ -19,6 +22,8 @@ import java.util.Random;
 @NoArgsConstructor
 @Table(name = "order_tbl")
 public class Order {
+    // mean : factor
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -27,6 +32,7 @@ public class Order {
     private  int shortNumber;
 
     @Column(name = "date")
+    @CreationTimestamp
     private ZonedDateTime date;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -41,6 +47,7 @@ public class Order {
 
     @PostPersist
     public void postPersist(){
-        this.date = ZonedDateTime.now();
+        this.orderStatus = OrderStatus.PENDING;
+        this.shortNumber = OrderService.generateRandomUniqueNumber();
     }
 }
