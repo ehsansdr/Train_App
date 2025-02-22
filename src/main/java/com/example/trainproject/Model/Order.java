@@ -11,6 +11,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.context.event.EventListener;
 import org.springframework.data.annotation.CreatedBy;
 
+import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.Random;
 
@@ -21,7 +22,7 @@ import java.util.Random;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "order_tbl")
-public class Order {
+public class Order implements Serializable {
     // mean : factor
 
     @Id
