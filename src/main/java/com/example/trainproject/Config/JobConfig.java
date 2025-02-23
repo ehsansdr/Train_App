@@ -10,21 +10,7 @@ import java.util.Date;
 @Configuration
 public class JobConfig {
 
-    @Bean
-    public JobDetail timeScheduledJobDetail() {
-        return JobBuilder.newJob(TimeScheduledJob.class)
-                .withIdentity("TimeScheduledJob")
-                .storeDurably()  // This ensures the job is stored even if it's not triggered
-                .build();
-    }
 
-    @Bean
-    public Trigger timeScheduledJobTrigger(JobDetail timeScheduledJobDetail) {
-        return TriggerBuilder.newTrigger()
-                .forJob(timeScheduledJobDetail)  // Using the JobDetail bean here
-                .startAt(new Date(System.currentTimeMillis() + (10 * 1000))) // Trigger job 10 seconds after the application starts
-                .build();
-    }
 
 //    @Bean
 //    public Trigger timeScheduledJobTrigger(JobDetail timeScheduledJobDetail) {
