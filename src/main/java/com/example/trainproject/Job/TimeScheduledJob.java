@@ -74,6 +74,8 @@ public class TimeScheduledJob extends BaseScheduler implements Job {
                                                 @Qualifier("timeScheduledJobDetail") JobDetail job, SchedulerFactoryBean factory)
             throws SchedulerException {
         log.debug("Getting a handle to the Scheduler");
+        // Scheduler: The Scheduler is responsible for managing jobs and triggers.
+        // It schedules, executes, and manages the lifecycle of jobs.
         Scheduler scheduler = factory.getScheduler();
 
         // Check if the job exists and delete it
@@ -81,16 +83,19 @@ public class TimeScheduledJob extends BaseScheduler implements Job {
         // If the job exists, it deletes the old job using scheduler.
         // deleteJob(jobKey) before scheduling the new one.
         JobKey jobKey = job.getKey();
-        if (scheduler.checkExists(jobKey)) {
+        if (scheduler.checkExists(jobKey)) { // checkExists(jobKey): This checks if a job with the given key already exists. If it does, the old job is deleted with deleteJob(jobKey).
             log.info("Job {} already exists, deleting the old job.", jobKey);
             scheduler.deleteJob(jobKey);
         }
         // be care ful this code handle the existence of job in the project if the job already exist you will get the exception
 
         // Now schedule the job again
+        // scheduleJob(job, trigger): Schedules the job with the specified trigger.
+        // This will cause the job to run based on the defined trigger configuration.
         scheduler.scheduleJob(job, trigger);
 
         log.debug("Starting Scheduler threads");
+        // scheduler.start(): Starts the scheduler. Once this is called, the job will begin running according to its trigger.
         scheduler.start();
         return scheduler;
     }
