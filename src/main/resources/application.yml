@@ -12,27 +12,19 @@ spring:
     properties:
       hibernate.format_sql: true # Optional: Format SQL in logs
 
-
   liquibase:
     enabled: true
     change-log: /db/changelog/db.yml
     #    searchPath: classpath:/db/scripts
-
-
-
 
     # Optional - If you want to configure a naming strategy for your tables/columns
   # jpa:
   #   hibernate:
   #     naming:
   #       physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl # Or a custom strategy
-
   cloud:
     compatibility-verifier:
       enabled: false
-
-
-
 
 server:
   port: 8080 # Or your preferred port
@@ -44,3 +36,6 @@ logging:
     root: INFO  # Or DEBUG for more detailed output
     org.hibernate.SQL: DEBUG # To see SQL statements
     org.hibernate.type.descriptor.sql: TRACE # To see data binding
+
+Trian:
+  enableJob : true
