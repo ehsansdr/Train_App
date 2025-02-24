@@ -37,5 +37,14 @@ logging:
     org.hibernate.SQL: DEBUG # To see SQL statements
     org.hibernate.type.descriptor.sql: TRACE # To see data binding
 
+#  quartz:
+#    job-store-type: jdbc
+#    jdbc:
+#      initialize-schema: never  # Do not automatically create schema (make sure tables are set up)
+#    threadpool:
+#      class: org.quartz.simpl.SimpleThreadPool
+#      thread-count: 4  # Number of threads available for job execution
+#      threads-inherit-context-class-loader-of-initializing-thread: true  # Inherit class loader from initializing thread
+
 Trian:
   enableJob : true
