@@ -10,8 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/user-controller")
-@SecurityRequirement(name = "api-key")
-public class UserController extends baseController {
+public class UserController extends BaseController {
 
     @Autowired
     private ApplicationEventPublisher eventPublisher;
