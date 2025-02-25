@@ -47,4 +47,4 @@ logging:
 #      threads-inherit-context-class-loader-of-initializing-thread: true  # Inherit class loader from initializing thread
 
 Trian:
-  enableJob : true
+  enableJob : false
