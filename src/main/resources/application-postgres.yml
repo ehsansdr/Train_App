@@ -1,0 +1,22 @@
+# application-postgres.yml (PostgreSQL specific configurations)
+spring.config.activate.on-profile: postgres  # Correct property for profile activation
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:15432/db_from_postgres_container  # PostgreSQL DB URL
+    username: postgres  # PostgreSQL username
+    password: postgres  # PostgreSQL password
+    driver-class-name: org.postgresql.Driver  # PostgreSQL driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      idle-timeout: 30000
+      connection-timeout: 30000
+      pool-name: HikariCP
+
+  jpa:
+    hibernate:
+      ddl-auto: update  # You can change this (none, create, validate, etc.)
+    show-sql: true
+    properties:
+      hibernate.format_sql: true

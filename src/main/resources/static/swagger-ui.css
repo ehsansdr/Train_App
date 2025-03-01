@@ -1,0 +1,118 @@
+/* Swagger UI Dark Theme */
+
+/* General Background */
+.swagger-ui {
+    background-color: #2f2f2f;
+    color: #f5f5f5;
+}
+
+/* Top Bar */
+.swagger-ui .topbar {
+    background-color: #1d1d1d;
+    border-bottom: 2px solid #444;
+}
+
+.swagger-ui .topbar .download-url-wrapper input {
+    background-color: #333;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+}
+
+.swagger-ui .topbar .download-url-wrapper input:focus {
+    outline: none;
+}
+
+/* Main Section */
+.swagger-ui .swagger-ui .opblock-summary {
+    background-color: #3e3e3e;
+    color: #fff;
+}
+
+.swagger-ui .swagger-ui .opblock-summary:hover {
+    background-color: #555;
+}
+
+.swagger-ui .swagger-ui .opblock-summary-description {
+    color: #bbb;
+}
+
+.swagger-ui .swagger-ui .opblock-summary-method {
+    color: #fff;
+}
+
+/* Expandable Blocks */
+.swagger-ui .swagger-ui .opblock-summary-expanded {
+    background-color: #444;
+}
+
+.swagger-ui .swagger-ui .opblock-body {
+    background-color: #333;
+    border-radius: 4px;
+}
+
+.swagger-ui .swagger-ui .opblock-body .opblock-body-info {
+    color: #ccc;
+}
+
+/* Buttons */
+.swagger-ui .swagger-ui .btn {
+    background-color: #666;
+    border: none;
+    color: #fff;
+}
+
+.swagger-ui .swagger-ui .btn:hover {
+    background-color: #888;
+}
+
+/* Links */
+.swagger-ui a {
+    color: #80c0ff;
+}
+
+.swagger-ui a:hover {
+    color: #fff;
+}
+
+/* Code Block */
+.swagger-ui .swagger-ui .highlight pre {
+    background-color: #222;
+    color: #f8f8f2;
+    border-radius: 4px;
+    padding: 10px;
+}
+
+/* Input Fields */
+.swagger-ui .swagger-ui input, .swagger-ui .swagger-ui textarea {
+    background-color: #333;
+    color: #fff;
+    border: 1px solid #444;
+    border-radius: 4px;
+}
+
+/* Operation Details */
+.swagger-ui .swagger-ui .opblock {
+    border: 1px solid #444;
+    margin-bottom: 10px;
+}
+
+.swagger-ui .swagger-ui .opblock-summary .opblock-summary-path {
+    color: #80c0ff;
+}
+
+/* Scrollable Section */
+.swagger-ui .swagger-ui .swagger-ui .doc-outer {
+    overflow-y: scroll;
+}
+
+/* Section Header */
+.swagger-ui .swagger-ui .model .model-title {
+    background-color: #333;
+    color: #fff;
+}
+
+.swagger-ui .swagger-ui .model .model-body {
+    background-color: #444;
+    color: #f5f5f5;
+}

@@ -1,50 +1,30 @@
 spring:
-  datasource:
-    url: jdbc:mysql://localhost:3306/train_db  # Replace with your DB name
-    username: root  # Your MySQL username (NOT root for production!)
-    password: P@ssw0rd # Your MySQL password
-    driver-class-name: com.mysql.cj.jdbc.Driver # Essential for MySQL
-
-  jpa:
-    hibernate:
-      ddl-auto: update # Or create, none, validate, etc.  'validate' is good for liquibase
-    show-sql: true  # Optional: Show SQL in console (for debugging)
-    properties:
-      hibernate.format_sql: true # Optional: Format SQL in logs
+#  profiles:
+#    active: postgres
 
   liquibase:
     enabled: true
     change-log: /db/changelog/db.yml
-    #    searchPath: classpath:/db/scripts
-
-    # Optional - If you want to configure a naming strategy for your tables/columns
-  # jpa:
-  #   hibernate:
-  #     naming:
-  #       physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl # Or a custom strategy
-  cloud:
-    compatibility-verifier:
-      enabled: false
 
 server:
-  port: 8080 # Or your preferred port
+  port: 8080
 
-# Logging configuration (optional)
 logging:
   level:
     liquibase: DEBUG
-    root: INFO  # Or DEBUG for more detailed output
-    org.hibernate.SQL: DEBUG # To see SQL statements
-    org.hibernate.type.descriptor.sql: TRACE # To see data binding
+    root: INFO
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql: TRACE
+    org.springdoc: DEBUG
 
-#  quartz:
-#    job-store-type: jdbc
-#    jdbc:
-#      initialize-schema: never  # Do not automatically create schema (make sure tables are set up)
-#    threadpool:
-#      class: org.quartz.simpl.SimpleThreadPool
-#      thread-count: 4  # Number of threads available for job execution
-#      threads-inherit-context-class-loader-of-initializing-thread: true  # Inherit class loader from initializing thread
+springdoc:
+  swagger-ui:
+    enabled: true
+    layout: StandaloneLayout
+    title: My Custom Swagger UI
+    deep-linking: true
+    url: /v3/api-docs
+    css-url: /swagger-ui.css
 
 Trian:
-  enableJob : false
+  enableJob: false
