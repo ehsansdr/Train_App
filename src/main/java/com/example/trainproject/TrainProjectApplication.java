@@ -20,10 +20,10 @@ public class TrainProjectApplication {
 
     //@Bean
     public CommandLineRunner persist(
-            UserRepository userRepositry,
-            OrderRepository orderRepository,
-            OrderService orderService
-    ){
+        UserRepository userRepositry,
+        OrderRepository orderRepository,
+        OrderService orderService
+    ) {
         return args -> {
 //            User user = User.builder()
 //                    .name("admin")
