@@ -1,6 +1,6 @@
 spring:
-#  profiles:
-#    active: postgres
+  profiles:
+    active: postgres
 
   liquibase:
     enabled: true
