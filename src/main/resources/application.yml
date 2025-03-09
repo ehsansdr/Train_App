@@ -26,5 +26,5 @@ springdoc:
     url: /v3/api-docs
     css-url: /swagger-ui.css
 
-Trian:
+Train:
   enableJob: false

@@ -2,9 +2,11 @@ package com.example.trainproject.base.Job;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @AllArgsConstructor
+@RequiredArgsConstructor
 public abstract class BaseScheduler {
     protected String jobTitlePrefix;
     @Getter

@@ -12,12 +12,15 @@ import org.quartz.SimpleScheduleBuilder;
 import org.quartz.Trigger;
 import org.quartz.TriggerBuilder;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
+@ConditionalOnExpression("'${Train.enableJob}' == 'true' ")
 public class QuartsJob extends BaseScheduler implements Job {
 
   public QuartsJob() {
@@ -48,7 +51,7 @@ public class QuartsJob extends BaseScheduler implements Job {
         .forJob("quartsJob", "group1")  // Reference job by identity and group
         .withIdentity("quartsTrigger", "group1")
         .withSchedule(SimpleScheduleBuilder.simpleSchedule()
-            .withIntervalInSeconds(120)  // Interval in seconds
+            .withIntervalInSeconds(10)  // Interval in seconds
             .repeatForever())  // Repeat forever
         .build();
   }
@@ -61,9 +64,6 @@ public class QuartsJob extends BaseScheduler implements Job {
       @Qualifier("quartsJobDetail") JobDetail job,
       SchedulerFactoryBean factory) throws SchedulerException {
 
-    log.debug("JOB: Getting a handle to the Scheduler");
-    Scheduler scheduler = factory.getScheduler();
-
 //    // Check if the job already exists before trying to schedule
 //    if (scheduler.checkExists(job.getKey())) {
 //      log.warn("Job with ID {} already exists, skipping scheduling", job.getKey());
@@ -74,6 +74,6 @@ public class QuartsJob extends BaseScheduler implements Job {
 //      scheduler.start();
 //    }
 
-    return scheduler;
+    return factory.getScheduler();
   }
 }
