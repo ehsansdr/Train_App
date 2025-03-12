@@ -14,8 +14,10 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 public class TrainProjectApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(TrainProjectApplication.class, args);
 
+
+//        System.out.println(System.currentTimeMillis());
+        SpringApplication.run(TrainProjectApplication.class, args);
     }
 
     //@Bean
