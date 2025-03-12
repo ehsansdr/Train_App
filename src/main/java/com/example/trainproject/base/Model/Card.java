@@ -48,22 +48,22 @@ public class Card implements Serializable {
   @NotNull
   private String lastName;
 
-  @Column(name = "pin1" , columnDefinition = "VARCHAR(4)")
+  @Column(name = "pin1", columnDefinition = "VARCHAR(4)")
   @NotNull
   private String pin1;
 
-  @Column(name = "pin2" , columnDefinition = "VARCHAR(22)")
+  @Column(name = "pin2", columnDefinition = "VARCHAR(22)")
   @NotNull
   private String pin2;
 
   @ManyToOne
-  @JoinColumn(name  = "user_id")
+  @JoinColumn(name = "user_id")
   private User user;
 
   @Column(columnDefinition = "VARCHAR default 'PENDING'")
   @NotNull
   @Enumerated(EnumType.STRING)
-  private CardStatus  status;
+  private CardStatus status;
 
   @CreationTimestamp
   @Column(name = "created_at")
