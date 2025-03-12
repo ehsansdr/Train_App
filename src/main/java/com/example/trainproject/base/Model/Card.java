@@ -60,8 +60,7 @@ public class Card implements Serializable {
   @JoinColumn(name = "user_id")
   private User user;
 
-  @Column(columnDefinition = "VARCHAR default 'PENDING'")
-  @NotNull
+  @Column(columnDefinition = "VARCHAR(20)", nullable = false)
   @Enumerated(EnumType.STRING)
   private CardStatus status;
 

@@ -46,7 +46,7 @@ public class CardController {
   public CardResponse createCardRequest(
       @PathVariable UUID id,
       @RequestBody CardCreateResponce cardCreateRequest
-  ) {
+  ) throws Exception {
     Card newCard = cardService.createNewCard(id, cardCreateRequest);
     return cardMapper.mapToResponse(newCard);
   }

@@ -33,7 +33,7 @@ public class Order implements Serializable {
     private ZonedDateTime date;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_name")
+    @JoinColumn(name = "user_id", referencedColumnName = "id")  // Reference the correct PK
     private User user;
 
     @Column(name = "total_amount")

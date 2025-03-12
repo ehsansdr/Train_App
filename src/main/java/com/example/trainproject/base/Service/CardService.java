@@ -4,6 +4,9 @@ import com.example.trainproject.base.Dto.CardCreateResponce;
 import com.example.trainproject.base.Model.Card;
 import com.example.trainproject.base.Model.User;
 import com.example.trainproject.base.Repository.CardRepository;
+import com.example.trainproject.base.Util.PANgenerator;
+import com.example.trainproject.base.Util.hash.Argon2HashService;
+import com.example.trainproject.base.Util.hash.Argon2HashServiceImpl;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -18,6 +21,7 @@ public class CardService {
 
   private final CardRepository cardRepository;
   private final UserService userService;
+  private final Argon2HashServiceImpl argon2HashService;
 
   public Page<Card> getAllCards(int pageSize,
       int pageNumber,
@@ -40,8 +44,27 @@ public class CardService {
     return cardRepository.findAllExistedCards(pageable);
   }
 
-  public Card createNewCard(UUID userId,CardCreateResponce cardCreateRequest) {
+  public Card createNewCard(UUID userId,CardCreateResponce cardCreateRequest) throws Exception {
     User user = userService.getSingle(userId);
-    return null;
+
+    Card card = createValidcard(user,cardCreateRequest);
+    return card;
+  }
+
+  private Card createValidcard(User user, CardCreateResponce cardCreateRequest) throws Exception {
+    if (user == null) {
+      System.out.println("user is null");
+      return null;
+    }
+
+    Card card = new Card();
+    card.setUser(user);
+    card.setCardNumber(PANgenerator.generatePAN(cardRepository.getSequence()));
+    card.setFirstName(cardCreateRequest.getFirstName());
+    card.setLastName(cardCreateRequest.getLastName());
+    card.setPin1(argon2HashService.hashValue("0000"));
+    card.setPin2("0000");
+
+    return cardRepository.save(card);
   }
 }
