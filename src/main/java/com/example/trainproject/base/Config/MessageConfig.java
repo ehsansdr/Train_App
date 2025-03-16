@@ -12,7 +12,7 @@ public class MessageConfig {
 
     @Bean
     public MessageSource messageSource() {
-        // this is manetory to have this class and body in this class
+        // this is mandatory to have this class and body in this class
         // This tells Spring Boot to load messages_fa.properties from src/main/resources and use UTF-8 encoding.
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
         // be care ful about the path : if you have the path src/main/resources/i18n/messages_fa.properties
@@ -21,6 +21,5 @@ public class MessageConfig {
         messageSource.setDefaultEncoding("UTF-8");  // ensure UTF-8 encoding is used
         return messageSource;
     }
-
 
 }
