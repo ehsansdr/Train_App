@@ -5,19 +5,33 @@ spring:
     password: P@ssw0rd # Your MySQL password
     driver-class-name: com.mysql.cj.jdbc.Driver # Essential for MySQL
 
-  jpa:
-    hibernate:
-      ddl-auto: update # Or create, none, validate, etc.  'update' is good for development
-    show-sql: true  # Optional: Show SQL in console (for debugging)
-    properties:
-      hibernate.format_sql: true # Optional: Format SQL in logs
-  liquibase:
-    change-log: classpath:/db/changelog/db.changelog-master.yaml
-  # Optional - If you want to configure a naming strategy for your tables/columns
-  # jpa:
-  #   hibernate:
-  #     naming:
-  #       physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl # Or a custom strategy
+#  jpa:
+#    hibernate:
+#      ddl-auto: update # Or create, none, validate, etc.  'update' is good for development
+#    show-sql: true  # Optional: Show SQL in console (for debugging)
+#    properties:
+#      hibernate.format_sql: true # Optional: Format SQL in logs
+#  liquibase:
+#    change-log: classpath:/db/changelog/db.changelog-master.yaml
+#  # Optional - If you want to configure a naming strategy for your tables/columns
+#  # jpa:
+#  #   hibernate:
+#  #     naming:
+#  #       physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl # Or a custom strategy
+
+
+data:
+  elasticsearch:
+    cluster-name: elasticsearch
+    cluster-nodes: localhost:9200
+    repositories:
+      enabled: true
+    rest:
+      # Elasticsearch RestClient settings (for HTTP connections)
+      read-timeout: 5000  # Timeout for reading data from the server (in milliseconds)
+      connect-timeout: 5000  # Timeout to establish a connection (in milliseconds)
+      max-conn-total: 200  # Maximum total connections in the connection pool
+      max-conn-per-route: 50  # Maximum connections per route (target host)
 
 server:
   port: 8080 # Or your preferred port
