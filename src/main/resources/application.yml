@@ -5,20 +5,28 @@ spring:
     password: P@ssw0rd # Your MySQL password
     driver-class-name: com.mysql.cj.jdbc.Driver # Essential for MySQL
 
-#  jpa:
-#    hibernate:
-#      ddl-auto: update # Or create, none, validate, etc.  'update' is good for development
-#    show-sql: true  # Optional: Show SQL in console (for debugging)
-#    properties:
-#      hibernate.format_sql: true # Optional: Format SQL in logs
-#  liquibase:
-#    change-log: classpath:/db/changelog/db.changelog-master.yaml
-#  # Optional - If you want to configure a naming strategy for your tables/columns
-#  # jpa:
-#  #   hibernate:
-#  #     naming:
-#  #       physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl # Or a custom strategy
-
+  #  jpa:
+  #    hibernate:
+  #      ddl-auto: update # Or create, none, validate, etc.  'update' is good for development
+  #    show-sql: true  # Optional: Show SQL in console (for debugging)
+  #    properties:
+  #      hibernate.format_sql: true # Optional: Format SQL in logs
+  #  liquibase:
+  #    change-log: classpath:/db/changelog/db.changelog-master.yaml
+  #  # Optional - If you want to configure a naming strategy for your tables/columns
+  #  # jpa:
+  #  #   hibernate:
+  #  #     naming:
+  #  #       physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl # Or a custom strategy
+  cloud:
+    vault:
+      uri: http://127.0.0.1:8200
+      token: hvs.p1i4F8v4u3NkWBu98luYfgbw
+      kv:
+        enabled: true
+        backend: secret
+        default-context: foo  # Correct path to the secret
+spring.config.import: vault:// # it is essential to have this , if not the application will not find the context in the secret
 
 data:
   elasticsearch:
