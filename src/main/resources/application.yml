@@ -5,6 +5,15 @@ spring:
   liquibase:
     enabled: true
     change-log: /db/changelog/db.yml
+  cloud:
+    vault:
+      uri: http://127.0.0.1:8200
+      token: hvs.TH8eeOix4dlffTyctwiypM8K
+      kv:
+        enabled: true
+        backend: secret
+        default-context: foo  # Correct path to the secret
+spring.config.import: vault:// # it is essential to have this , if not the application will not find the context in the secret
 
 server:
   port: 8080
