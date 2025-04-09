@@ -1,4 +1,19 @@
 spring:
+
+  kafka:
+    # Kafka producer settings
+    producer:
+      bootstrap-servers: 192.168.110.243:19091  # Kafka broker to connect to (IP:port)
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer  # Serializer for the key (converts key into byte array)
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer  # Serializer for the value (converts value into byte array)
+
+  #    # Kafka consumer settings
+  #    consumer:
+  #      bootstrap-servers: kafka1:19091  # Kafka broker to connect to (IP:port)
+  #      group-id: test-group  # Consumer group id. Kafka uses this to group consumers together
+  #      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer  # Deserializer for the key (converts byte array into key)
+  #      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer  # Deserializer for the value (converts byte array into value)
+
   datasource:
     url: jdbc:mysql://localhost:3306/train_db  # Replace with your DB name
     username: root  # Your MySQL username (NOT root for production!)
@@ -22,20 +37,6 @@ spring:
 server:
   port: 8080 # Or your preferred port
 
-  kafka:
-    # Kafka producer settings
-    producer:
-      bootstrap-servers: 192.168.110.243:19091  # Kafka broker to connect to (IP:port)
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer  # Serializer for the key (converts key into byte array)
-      value-serializer: org.apache.kafka.common.serialization.StringSerializer  # Serializer for the value (converts value into byte array)
-
-    # Kafka consumer settings
-    consumer:
-      bootstrap-servers: 192.168.110.243:19091  # Kafka broker to connect to (IP:port)
-      group-id: test-group  # Consumer group id. Kafka uses this to group consumers together
-      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer  # Deserializer for the key (converts byte array into key)
-      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer  # Deserializer for the value (converts byte array into value)
-
 
 # Logging configuration (optional)
 logging:
@@ -43,3 +44,8 @@ logging:
     root: INFO  # Or DEBUG for more detailed output
     org.hibernate.SQL: DEBUG # To see SQL statements
     org.hibernate.type.descriptor.sql: TRACE # To see data binding
+
+
+my:
+  kafka:
+    topic: "kafka_training_Es"
