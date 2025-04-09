@@ -1,11 +1,19 @@
 spring:
 
+
   kafka:
-    # Kafka producer settings
+    bootstrap-servers: localhost:9092
     producer:
-      bootstrap-servers: 192.168.110.243:19091  # Kafka broker to connect to (IP:port)
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer  # Serializer for the key (converts key into byte array)
-      value-serializer: org.apache.kafka.common.serialization.StringSerializer  # Serializer for the value (converts value into byte array)
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+# for pre-build part
+#  kafka:
+#    # Kafka producer settings
+#    producer:
+#      bootstrap-servers: 192.168.110.243:19091  # Kafka broker to connect to (IP:port)
+#      key-serializer: org.apache.kafka.common.serialization.StringSerializer  # Serializer for the key (converts key into byte array)
+#      value-serializer: org.apache.kafka.common.serialization.StringSerializer  # Serializer for the value (converts value into byte array)
 
   #    # Kafka consumer settings
   #    consumer:
