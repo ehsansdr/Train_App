@@ -18,8 +18,6 @@ public class TrainProjectApplication {
     SpringApplication.run(TrainProjectApplication.class, args);
 
   }
-  @Value(value="${my.kafka.topic}")
-  private String kafkaTopic;
 
   // @Bean
   public CommandLineRunner init(KafkaProducerService kafkaProducerService) {
