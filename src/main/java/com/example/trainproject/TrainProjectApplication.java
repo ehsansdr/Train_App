@@ -22,7 +22,6 @@ public class TrainProjectApplication {
   // @Bean
   public CommandLineRunner init(KafkaProducerService kafkaProducerService) {
     return args -> {
-      System.out.println(kafkaTopic);
       Faker faker = new Faker();
       KafkaProduceMessage kafkaProducedMessage = new KafkaProduceMessage();
       kafkaProducedMessage.setId(1);
