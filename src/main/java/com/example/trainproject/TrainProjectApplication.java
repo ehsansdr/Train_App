@@ -1,6 +1,9 @@
 package com.example.trainproject;
 
+import com.example.trainproject.Model.KafkaProduceMessage;
 import com.example.trainproject.service.KafkaProducerService;
+import com.github.javafaker.Faker;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -15,11 +18,19 @@ public class TrainProjectApplication {
     SpringApplication.run(TrainProjectApplication.class, args);
 
   }
+  @Value(value="${my.kafka.topic}")
+  private String kafkaTopic;
 
-  @Bean
+  // @Bean
   public CommandLineRunner init(KafkaProducerService kafkaProducerService) {
     return args -> {
-         kafkaProducerService.sendMessage("can you see ne shayan");
+      System.out.println(kafkaTopic);
+      Faker faker = new Faker();
+      KafkaProduceMessage kafkaProducedMessage = new KafkaProduceMessage();
+      kafkaProducedMessage.setId(1);
+      kafkaProducedMessage.setName(faker.name().name());
+      kafkaProducedMessage.setDescription(faker.lorem().paragraph());
+      kafkaProducerService.sendMessageJson(kafkaProducedMessage);
     };
   }
 

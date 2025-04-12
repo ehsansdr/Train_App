@@ -1,4 +1,4 @@
-package com.example.trainproject.comtroller;
+package com.example.trainProject.controller;
 
 import com.example.trainproject.service.KafkaProducerService;
 import org.apache.kafka.common.protocol.types.Field.Str;

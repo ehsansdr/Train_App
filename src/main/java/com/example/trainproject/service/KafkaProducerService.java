@@ -1,5 +1,7 @@
 package com.example.trainproject.service;
 
+import com.example.trainproject.Model.KafkaProduceMessage;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,10 +13,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class KafkaProducerService {
 
-  private String kafkaTopic = "kafka_training_Es";
+  @Value(value="${my.kafka.topic}")
+  private String kafkaTopic;
 
   @Autowired
   private KafkaTemplate<String, String> kafkaTemplate;
+  @Autowired
+  private ObjectMapper objectMapper;
+
 
   public void sendMessage(String message) {
     kafkaTemplate.send(kafkaTopic, message)
@@ -30,5 +36,27 @@ public class KafkaProducerService {
   }
 
 
+  public void sendMessageJson(KafkaProduceMessage message) {
+    try {
+      // Serialize the message to JSON using ObjectMapper
+      String messageJson = objectMapper.writeValueAsString(message);
+
+      // Send the serialized JSON message to Kafka
+      kafkaTemplate.send(kafkaTopic, messageJson)
+          .whenComplete((result, ex) -> {
+            if (ex != null) {
+              log.error("❌ Failed to send message: {}", ex.getMessage(), ex);
+            } else {
+              log.info("✅ Message sent successfully to topic: {}, partition: {}, offset: {}",
+                  kafkaTopic,
+                  result.getRecordMetadata().partition(),
+                  result.getRecordMetadata().offset());
+            }
+          });
+
+    } catch (Exception e) {
+      log.error("❌ Failed to serialize message to JSON: {}", e.getMessage(), e);
+    }
+  }
 
 }
