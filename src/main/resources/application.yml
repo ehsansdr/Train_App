@@ -7,6 +7,12 @@ spring:
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
+#      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+#      # Configure the default type for the value serializer (specify the class)
+#      value-default-type: com.example.KafkaProduceMessage  # Replace with your actual class
+#      # Allow deserialization from any package
+#      properties:
+#        spring.json.trusted.packages: "*"
 
 # for pre-build part
 #  kafka:

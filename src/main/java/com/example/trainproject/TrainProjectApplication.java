@@ -28,6 +28,7 @@ public class TrainProjectApplication {
       kafkaProducedMessage.setName(faker.name().name());
       kafkaProducedMessage.setDescription(faker.lorem().paragraph());
       kafkaProducerService.sendMessageJson(kafkaProducedMessage);
+      System.out.println(kafkaProducedMessage);
     };
   }
 
