@@ -3,7 +3,7 @@ spring:
 
   kafka:
 #    bootstrap-servers: 192.168.110.243:9000
-    bootstrap-servers: 192.168.110.243:19091
+    bootstrap-servers: 192.168.110.243:19091 # By adding this line to /etc/hosts:     192.168.110.243 kafka1
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
