@@ -17,7 +17,7 @@ public class KafkaProducerService {
   private String kafkaTopic;
 
   @Autowired
-  private KafkaTemplate<String, String> kafkaTemplate;
+  private KafkaTemplate<String, Object> kafkaTemplate;
   @Autowired
   private ObjectMapper objectMapper;
 
@@ -36,7 +36,7 @@ public class KafkaProducerService {
   }
 
 
-  public void sendMessageJson(KafkaProduceMessage message) {
+  public void sendMessageJson(Object message) {
     try {
       // Serialize the message to JSON using ObjectMapper
       String messageJson = objectMapper.writeValueAsString(message);
