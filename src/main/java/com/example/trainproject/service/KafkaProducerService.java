@@ -36,13 +36,9 @@ public class KafkaProducerService {
   }
 
 
-  public void sendMessageJson(Object message) {
+  public void sendMessageJson(KafkaProduceMessage message) {
     try {
-      // Serialize the message to JSON using ObjectMapper
-      String messageJson = objectMapper.writeValueAsString(message);
-
-      // Send the serialized JSON message to Kafka
-      kafkaTemplate.send(kafkaTopic, messageJson)
+      kafkaTemplate.send(kafkaTopic, message)
           .whenComplete((result, ex) -> {
             if (ex != null) {
               log.error("❌ Failed to send message: {}", ex.getMessage(), ex);
