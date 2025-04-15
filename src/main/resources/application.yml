@@ -1,18 +1,38 @@
 spring:
-
-
   kafka:
-#    bootstrap-servers: 192.168.110.243:9000
-    bootstrap-servers: 192.168.110.243:19091 # By adding this line to /etc/hosts:     192.168.110.243 kafka1
+    bootstrap-servers: 192.168.110.243:19091 # Kafka broker address(es)
+
     producer:
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.apache.kafka.common.serialization.StringSerializer
-#      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
-#      # Configure the default type for the value serializer (specify the class)
-#      value-default-type: com.example.KafkaProduceMessage  # Replace with your actual class
-#      # Allow deserialization from any package
-#      properties:
-#        spring.json.trusted.packages: "*"
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer # Serializer for the key of the Kafka message (String in this case)
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer # Serializer for the value of the Kafka message (using Spring's JsonSerializer for JSON)
+      properties:
+        spring:
+          kafka:
+            json:
+              add:
+                type:
+                  headers: true # This property tells the JsonSerializer to add type information to the message headers
+
+    consumer:
+      bootstrap-servers: 192.168.110.243:19091 # Replace with your Kafka brokers
+      group-id: ${my.kafka.consumer-group-id}         # Replace with your desired group ID
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer # Deserializer for the key of the Kafka message (String in this case)
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer # Deserializer for the value of the Kafka message (using Spring's JsonDeserializer for JSON)
+      auto-offset-reset: latest             # Or earliest
+      enable-auto-commit: true             # Default is true
+      auto-commit-interval: 5000           # in milliseconds (default: 5000)
+      max-poll-records: 500                # Maximum number of records to fetch in a single poll
+      fetch-min-bytes: 1024                # Minimum amount of data the server should return for a fetch request
+      fetch-max-wait: 1000                # Maximum amount of time the server will block before answering the fetch request if there isn't sufficient data
+      properties:
+        spring:
+          json:
+            value:
+              default:
+                type: com.example.trainproject.Model.KafkaProduceMessage # Explicitly set the default type for deserialization if no type header is found
+            trusted:
+              packages: com.example.trainproject.Model # Add the package of your KafkaProduceMessage class to allow deserialization
+              # Add other trusted package names here, separated by commas, if you have other models to consume
 
 # for pre-build part
 #  kafka:
@@ -64,3 +84,4 @@ logging:
 my:
   kafka:
     topic: "kafka_training_Es"
+    consumer-group-id: "my-consumer-group-id"
