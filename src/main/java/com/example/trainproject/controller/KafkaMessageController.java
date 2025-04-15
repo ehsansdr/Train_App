@@ -22,7 +22,7 @@ public class KafkaMessageController {
 
   @PostMapping("/produce-message")
   public String sendMessage(@RequestBody KafkaProduceMessage message) {
-    kafkaProducerService.sendMessageJson(message);
+    kafkaProducerService.sendMessage(message);
     log.info("message send successfully {}", message);
     return "Message sent: " + message;
   }

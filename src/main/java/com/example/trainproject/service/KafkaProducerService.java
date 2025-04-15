@@ -55,4 +55,18 @@ public class KafkaProducerService {
     }
   }
 
+  public <T> void sendMessage(T message) {
+    kafkaTemplate.send(kafkaTopic, message)
+        .whenComplete((result, ex) -> {
+          if (ex != null) {
+            log.error("❌ Failed to send message: {}", ex.getMessage(), ex);
+          } else {
+            log.info("✅ Message sent successfully to topic: {}, partition: {}, offset: {}",
+                kafkaTopic,
+                result.getRecordMetadata().partition(),
+                result.getRecordMetadata().offset());
+          }
+        });
+  }
+
 }
