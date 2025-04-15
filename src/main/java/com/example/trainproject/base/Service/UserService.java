@@ -1,7 +1,6 @@
 package com.example.trainproject.base.Service;
 
 import com.example.trainproject.base.Model.User;
-import com.example.trainproject.base.Repository.CardRepository;
 import com.example.trainproject.base.Repository.UserRepository;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -24,5 +23,9 @@ public class UserService implements UserDetailsService {
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
     return userRepository.findByUsername(username)
         .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
+  }
+
+  public User save(User user){
+    return userRepository.save(user);
   }
 }

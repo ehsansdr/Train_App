@@ -19,10 +19,11 @@ public class SecurityConfig {
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http.authorizeRequests(
-        auth -> auth
+            auth -> auth.requestMatchers("/", "/api-docs/**", "/ipg/**", "/assets/**")
+                .permitAll()
             .requestMatchers("/public/**").permitAll()
             .requestMatchers("/admin/**").hasRole("ADMIN")
-            .requestMatchers(HttpMethod.POST, "/user/login").permitAll()
+            .requestMatchers(HttpMethod.POST, "/user/login").authenticated()
             .anyRequest().authenticated()
     )
         .formLogin(Customizer.withDefaults())
