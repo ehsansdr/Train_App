@@ -219,7 +219,7 @@ public class ObjectIntrospector {
     for (BeanPropertyDefinition property : properties) {
       String fieldName = property.getName();
       JavaType fieldType = property.getPrimaryType();
-      System.out.print("  Name: " + fieldName + ", Type: " + fieldType.getRawClass().getSimpleName() + " , ");
+      System.out.print("  Name: " + fieldName + ", Type: " + fieldType.getRawClass().getSimpleName() + " , fieldType: " +  fieldType  + " , ");
 
       try {
         // Use reflection to get the actual field object
@@ -237,31 +237,31 @@ public class ObjectIntrospector {
     }
 //    Class name : Card
 //    Fields of Card:
-//    Name: id, Type: Long , Value: null
-//    Name: cardNumber, Type: String , Value: 7000266980
-//    Name: firstName, Type: String , Value: Roosevelt
-//    Name: lastName, Type: String , Value: Klein
-//    Name: pin1, Type: String , Value: 0571100247
-//    Name: pin2, Type: String , Value: 4432305294
-//    Name: user, Type: User , Value: null
-//    Name: status, Type: CardStatus , Value: null
-//    Name: createdAt, Type: ZonedDateTime , Value: null
-//    Name: updatedAt, Type: ZonedDateTime , Value: null
-//    Name: deletedAt, Type: ZonedDateTime , Value: null
-//        **************************
-//        Class name : Order
+//    Name: id, Type: Long , fieldType: [simple type, class java.lang.Long] , Value: null
+//    Name: cardNumber, Type: String , fieldType: [simple type, class java.lang.String] , Value: 3632825824
+//    Name: firstName, Type: String , fieldType: [simple type, class java.lang.String] , Value: Eugene
+//    Name: lastName, Type: String , fieldType: [simple type, class java.lang.String] , Value: Stokes
+//    Name: pin1, Type: String , fieldType: [simple type, class java.lang.String] , Value: 5287057601
+//    Name: pin2, Type: String , fieldType: [simple type, class java.lang.String] , Value: 6258530417
+//    Name: user, Type: User , fieldType: [simple type, class com.example.trainproject.base.Model.User] , Value: null
+//    Name: status, Type: CardStatus , fieldType: [simple type, class com.example.trainproject.base.Constant.CardStatus] , Value: null
+//    Name: createdAt, Type: ZonedDateTime , fieldType: [simple type, class java.time.ZonedDateTime] , Value: null
+//    Name: updatedAt, Type: ZonedDateTime , fieldType: [simple type, class java.time.ZonedDateTime] , Value: null
+//    Name: deletedAt, Type: ZonedDateTime , fieldType: [simple type, class java.time.ZonedDateTime] , Value: null
+//    **************************
+//    Class name : Order
 //    Fields of Order:
-//    Name: id, Type: Long , Value: null
-//    Name: shortNumber, Type: int , Value: 3
-//    Name: date, Type: ZonedDateTime , Value: 2025-04-13T16:45:56.316-04:00[America/New_York]
-//    Name: user, Type: User , Value: null
-//    Name: totalAmount, Type: double , Value: -42.8999
-//    Name: orderStatus, Type: OrderStatus , Value: PENDING
-//        **************************
-//        Class name : Transaction
+//    Name: id, Type: Long , fieldType: [simple type, class java.lang.Long] , Value: null
+//    Name: shortNumber, Type: int , fieldType: [simple type, class int] , Value: 5
+//    Name: date, Type: ZonedDateTime , fieldType: [simple type, class java.time.ZonedDateTime] , Value: 2025-04-08T18:47:43.229-04:00[America/New_York]
+//    Name: user, Type: User , fieldType: [simple type, class com.example.trainproject.base.Model.User] , Value: null
+//    Name: totalAmount, Type: double , fieldType: [simple type, class double] , Value: -40.1854
+//    Name: orderStatus, Type: OrderStatus , fieldType: [simple type, class com.example.trainproject.base.Constant.OrderStatus] , Value: PENDING
+//    **************************
+//    Class name : Transaction
 //    Fields of Transaction:
-//    Name: id, Type: UUID , Value: null
-//    Name: amount, Type: BigDecimal , Value: 342.57
+//    Name: id, Type: UUID , fieldType: [simple type, class java.util.UUID] , Value: null
+//    Name: amount, Type: BigDecimal , fieldType: [simple type, class java.math.BigDecimal] , Value: 389.3
   }
 
 
