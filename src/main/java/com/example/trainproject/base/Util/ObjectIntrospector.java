@@ -122,7 +122,7 @@ public class ObjectIntrospector {
     }
   }
 
-  public static void IntrospectorMonitor4(Object obj) {
+  public static <T> void IntrospectorMonitor4(T obj) {
     ObjectMapper objectMapper = new ObjectMapper();
     TypeReference<Map<String, Object>> typeReference = new TypeReference<Map<String, Object>>() {};
     Map<String, Object> dataMap = null;
@@ -146,6 +146,7 @@ public class ObjectIntrospector {
         .introspect(javaType)
         .findProperties();
 
+    System.out.println("Class name : " + obj.getClass().getSimpleName());
     System.out.println("Fields of " + obj.getClass().getSimpleName() + ":");
     for (BeanPropertyDefinition property : properties) {
       String fieldName = property.getName();
@@ -165,10 +166,41 @@ public class ObjectIntrospector {
       } catch (IllegalAccessException e) {
         System.err.println("    Error: Could not access field '" + fieldName + "'.");
       }
-      // If dataMap was successfully populated from JSON, you could also try to get the value from there
-      // if (dataMap != null && dataMap.containsKey(fieldName)) {
-      //     System.out.println("    Value from dataMap: " + dataMap.get(fieldName));
-      // }
+      /* output :
+      Warning: Could not parse object string as JSON: Unrecognized token 'com': was expecting (JSON String, Number, Array, Object or token 'null', 'true' or 'false')
+         at [Source: REDACTED (`StreamReadFeature.INCLUDE_SOURCE_IN_LOCATION` disabled); line: 1, column: 4]
+        Class name : Card
+        Fields of Card:
+          Name: id, Type: Long , Value: null
+          Name: cardNumber, Type: String , Value: 1630510307
+          Name: firstName, Type: String , Value: Rocky
+          Name: lastName, Type: String , Value: Wolff
+          Name: pin1, Type: String , Value: 7577053145
+          Name: pin2, Type: String , Value: 4271248000
+          Name: user, Type: User , Value: null
+          Name: status, Type: CardStatus , Value: null
+          Name: createdAt, Type: ZonedDateTime , Value: null
+          Name: updatedAt, Type: ZonedDateTime , Value: null
+          Name: deletedAt, Type: ZonedDateTime , Value: null
+        **************************
+        Warning: Could not parse object string as JSON: Unrecognized token 'Order': was expecting (JSON String, Number, Array, Object or token 'null', 'true' or 'false')
+         at [Source: REDACTED (`StreamReadFeature.INCLUDE_SOURCE_IN_LOCATION` disabled); line: 1, column: 6]
+        Warning: Could not parse object string as JSON: Unrecognized token 'Transaction': was expecting (JSON String, Number, Array, Object or token 'null', 'true' or 'false')
+         at [Source: REDACTED (`StreamReadFeature.INCLUDE_SOURCE_IN_LOCATION` disabled); line: 1, column: 12]
+        Class name : Order
+        Fields of Order:
+          Name: id, Type: Long , Value: null
+          Name: shortNumber, Type: int , Value: 9
+          Name: date, Type: ZonedDateTime , Value: 2025-04-12T11:33:36.127-04:00[America/New_York]
+          Name: user, Type: User , Value: null
+          Name: totalAmount, Type: double , Value: -34.2129
+          Name: orderStatus, Type: OrderStatus , Value: PENDING
+        **************************
+        Class name : Transaction
+        Fields of Transaction:
+          Name: id, Type: UUID , Value: null
+          Name: amount, Type: BigDecimal , Value: 649.99
+       */
     }
   }
 
