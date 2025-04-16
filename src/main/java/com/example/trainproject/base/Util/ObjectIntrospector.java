@@ -20,6 +20,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+
 public class ObjectIntrospector {
 
   public static void main(String[] args) {
@@ -27,7 +28,8 @@ public class ObjectIntrospector {
     Date pastDate = faker.date().past(10, java.util.concurrent.TimeUnit.DAYS);
     Instant instant = pastDate.toInstant();
     ZoneId zoneId = ZoneId.of("America/New_York");
-    double randomDouble = faker.number().randomDouble(2, 1, 1000); // Example with 2 decimal places, between 1 and 1000
+    double randomDouble = faker.number()
+        .randomDouble(2, 1, 1000);
 
     // Convert the double to BigDecimal
     BigDecimal bigDecimalFromDouble = BigDecimal.valueOf(randomDouble);
@@ -41,7 +43,7 @@ public class ObjectIntrospector {
     IntrospectorMonitorTotal(obj);
     System.out.println("**************************");
     Order obj1 = new Order();
-    obj1.setShortNumber(faker.number().numberBetween(1,10));
+    obj1.setShortNumber(faker.number().numberBetween(1, 10));
     obj1.setTotalAmount(faker.number().randomDouble(4, -50, 50));
     obj1.setOrderStatus(OrderStatus.PENDING);
     obj1.setDate(ZonedDateTime.ofInstant(instant, zoneId));
@@ -52,8 +54,8 @@ public class ObjectIntrospector {
     IntrospectorMonitorTotal(obj2);
   }
 
-  public  static void IntrospectorMonitorTotal(Object obj) {
-    IntrospectorMonitor5(obj);
+  public static void IntrospectorMonitorTotal(Object obj) {
+    IntrospectorMonitorWithCastAutomatically(obj);
   }
 
   public static void IntrospectorMonitor(Object obj) {
@@ -264,5 +266,68 @@ public class ObjectIntrospector {
 //    Name: amount, Type: BigDecimal , fieldType: [simple type, class java.math.BigDecimal] , Value: 389.3
   }
 
+  public static <T> void IntrospectorMonitorWithCastAutomatically(T obj) {
+    ObjectMapper objectMapper = new ObjectMapper();
+    TypeFactory typeFactory = objectMapper.getTypeFactory();
+    JavaType javaType = typeFactory.constructType(obj.getClass());
+
+    // Get the BeanDescription which provides information about the class
+    List<BeanPropertyDefinition> properties = objectMapper.getSerializationConfig()
+        .introspect(javaType)
+        .findProperties();
+
+    System.out.println("Class name : " + obj.getClass().getSimpleName());
+    System.out.println("Fields of " + obj.getClass().getSimpleName() + ":");
+    for (BeanPropertyDefinition property : properties) {
+      String fieldName = property.getName();
+      JavaType fieldType = property.getPrimaryType();
+      System.out.print("  Name: " + fieldName + ", Type: " + fieldType.getRawClass().getSimpleName()
+          + " , fieldType: " + fieldType + " , ");
+
+      try {
+        // Use reflection to get the actual field object
+        Field field = obj.getClass().getDeclaredField(fieldName);
+        // Make private fields accessible
+        field.setAccessible(true);
+        // Get the value of the field
+        Object value = field.get(obj);
+        var castedValue = fieldType.getRawClass().cast(value); // Using the cast() method
+        System.out.println("castedValue : " + castedValue);
+      } catch (NoSuchFieldException e) {
+        System.err.println("    Error: Field '" + fieldName + "' not found using reflection.");
+      } catch (IllegalAccessException e) {
+        System.err.println("    Error: Could not access field '" + fieldName + "'.");
+      } catch (ClassCastException e) {
+        System.err.println("    Error: Could not cast value of field '" + fieldName + "' to type " + fieldType.getRawClass().getSimpleName() + ": " + e.getMessage());
+      }
+//      Class name : Card
+//      Fields of Card:
+//      Name: id, Type: Long , fieldType: [simple type, class java.lang.Long] , castedValue : null
+//      Name: cardNumber, Type: String , fieldType: [simple type, class java.lang.String] , castedValue : 8977054661
+//      Name: firstName, Type: String , fieldType: [simple type, class java.lang.String] , castedValue : Babara
+//      Name: lastName, Type: String , fieldType: [simple type, class java.lang.String] , castedValue : Medhurst
+//      Name: pin1, Type: String , fieldType: [simple type, class java.lang.String] , castedValue : 5874749447
+//      Name: pin2, Type: String , fieldType: [simple type, class java.lang.String] , castedValue : 2605834844
+//      Name: user, Type: User , fieldType: [simple type, class com.example.trainproject.base.Model.User] , castedValue : null
+//      Name: status, Type: CardStatus , fieldType: [simple type, class com.example.trainproject.base.Constant.CardStatus] , castedValue : null
+//      Name: createdAt, Type: ZonedDateTime , fieldType: [simple type, class java.time.ZonedDateTime] , castedValue : null
+//      Name: updatedAt, Type: ZonedDateTime , fieldType: [simple type, class java.time.ZonedDateTime] , castedValue : null
+//      Name: deletedAt, Type: ZonedDateTime , fieldType: [simple type, class java.time.ZonedDateTime] , castedValue : null
+//          **************************
+//          Class name : Order
+//      Fields of Order:
+//      Name: id, Type: Long , fieldType: [simple type, class java.lang.Long] , castedValue : null
+//      Name: shortNumber, Type: int , fieldType: [simple type, class int] ,   Name: date, Type: ZonedDateTime , fieldType: [simple type, class java.time.ZonedDateTime] , castedValue : 2025-04-10T10:15:54.494-04:00[America/New_York]
+//      Name: user, Type: User , fieldType: [simple type, class com.example.trainproject.base.Model.User] , castedValue : null
+//      Name: totalAmount, Type: double , fieldType: [simple type, class double] ,   Name: orderStatus, Type: OrderStatus , fieldType: [simple type, class com.example.trainproject.base.Constant.OrderStatus] , castedValue : PENDING
+//          **************************
+//          Class name : Transaction
+//      Fields of Transaction:
+//      Name: id, Type: UUID , fieldType: [simple type, class java.util.UUID] , castedValue : null
+//      Name: amount, Type: BigDecimal , fieldType: [simple type, class java.math.BigDecimal] , castedValue : 91.48
+//      Error: Could not cast value of field 'shortNumber' to type int: Cannot cast java.lang.Integer to int
+//      Error: Could not cast value of field 'totalAmount' to type double: Cannot cast java.lang.Double to double
+    }
+  }
 
 }
