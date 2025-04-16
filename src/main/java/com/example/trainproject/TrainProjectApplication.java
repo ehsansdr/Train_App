@@ -2,8 +2,10 @@ package com.example.trainproject;
 
 import com.example.trainproject.base.Config.MessageConfig;
 import com.example.trainproject.base.Constant.Role;
+import com.example.trainproject.base.Model.Card;
 import com.example.trainproject.base.Model.KafkaProduceMessage;
 import com.example.trainproject.base.Model.User;
+import com.example.trainproject.base.Util.Wapper.TransferWrapper;
 import com.example.trainproject.base.Service.KafkaProducerService;
 import com.example.trainproject.base.Service.UserService;
 import com.github.javafaker.Faker;
@@ -25,9 +27,6 @@ public class TrainProjectApplication {
 
     private MessageConfig messageSource = new MessageConfig();
     public static void main(String[] args) {
-//        System.out.println(System.currentTimeMillis());
-//        System.out.println(new BCryptPasswordEncoder().encode("P@ssw0rd"));
-
         SpringApplication.run(TrainProjectApplication.class, args);
     }
 
@@ -54,6 +53,25 @@ public class TrainProjectApplication {
             user.setPassword(passwordEncoder.encode("admin"));
             user.setRole(Role.ADMIN);
             userService.save(user);
+        };
+    }
+    @Bean
+    public CommandLineRunner wrapperClass(
+        UserService userService
+    ) {
+        return args -> {
+            Faker faker = new Faker();
+            Card card = new Card();
+            card.setCardNumber(faker.number().digits(10).toString());
+            card.setFirstName(faker.name().firstName());
+            card.setLastName(faker.name().lastName());
+            card.setPin1(faker.number().digits(10).toString());
+            card.setPin2(faker.number().digits(10).toString());
+            TransferWrapper<Card> wrapper = new TransferWrapper<>(
+                card,
+                "user-service",
+                "notification-service"
+            );
         };
     }
 
