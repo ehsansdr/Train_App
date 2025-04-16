@@ -1,12 +1,17 @@
 package com.example.trainproject.base.Model.Wapper;
 
+import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
+import lombok.ToString;
 
-@Data
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
+@ToString
 public class TransferWrapper<T> {
 
   private T data;
@@ -15,10 +20,15 @@ public class TransferWrapper<T> {
   private String destinationProject; // Optional: to identify the intended destination
 
   public TransferWrapper(T data) {
-    // The constructor with only 'data' is kept as it has custom logic for dataType.
     this.data = data;
-    this.dataType = data != null ? data.getClass().getName() : null;
+    this.dataType = data != null ? data.getClass().getName() : "null";
   }
 
-
+  // Optional helper constructor
+  public TransferWrapper(T data, String sourceProject, String destinationProject) {
+    this.data = data;
+    this.dataType = data != null ? data.getClass().getName() : "null";
+    this.sourceProject = sourceProject;
+    this.destinationProject = destinationProject;
+  }
 }
