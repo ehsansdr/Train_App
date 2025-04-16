@@ -14,5 +14,9 @@ public class TransferWrapperUtil {
   public static TransferWrapper<?> fromJson(String json) throws JsonProcessingException {
     return DEFAULT_MAPPER.readValue(json, TransferWrapper.class);
   }
+  public static TransferWrapper<? extends DataTransferObject> fromJsonSafely(String json) throws Exception {
+    return new TransferDeserializer(DEFAULT_MAPPER).deserialize(json);
+  }
+
 }
 
