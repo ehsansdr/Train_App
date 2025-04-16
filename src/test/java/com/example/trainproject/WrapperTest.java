@@ -1,25 +1,26 @@
 package com.example.trainproject;
 
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import com.example.trainproject.base.Model.Card;
-import com.example.trainproject.base.Util.Wapper.DataTransferObject;
 import com.example.trainproject.base.Util.Wapper.TransferTypeRegistry;
 import com.example.trainproject.base.Util.Wapper.TransferWrapper;
 import com.example.trainproject.base.Util.Wapper.TransferWrapperSerializer;
+import com.example.trainproject.base.Util.Wapper.TransferWrapperUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.github.javafaker.Faker;
-import org.checkerframework.checker.units.qual.C;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 
 public class WrapperTest {
@@ -68,4 +69,23 @@ public class WrapperTest {
     card.setPin2(faker.number().digits(10).toString());
     return card;
   }
+
+
+  @KafkaListener(topics = "${my.kafka.topic}", groupId = "group-id")
+  public void consume(String messageJson) throws Exception {
+    // Deserialize message
+    TransferWrapper<?> wrapper = TransferWrapperUtil.fromJsonSafely(messageJson);
+
+    // Handle the deserialized wrapper
+    Card card = (Card) wrapper.getData();
+    System.out.println("Received card: " + card);
+    System.out.println("Received card : " + card.getCardNumber());
+
+    // Add assertions to verify that everything is correct
+    assertEquals("123", card.getId());
+    assertEquals("Alice", card.getFirstName());
+    assertEquals("sourceProject", wrapper.getSourceProject());
+    assertEquals("destinationProject", wrapper.getDestinationProject());
+  }
+
 }
