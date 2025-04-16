@@ -31,7 +31,7 @@ public class TrainProjectApplication {
         SpringApplication.run(TrainProjectApplication.class, args);
     }
 
-    @Bean
+    // @Bean
     public CommandLineRunner init(KafkaProducerService kafkaProducerService) {
         return args -> {
             Faker faker = new Faker();
