@@ -2,6 +2,8 @@ package com.example.trainproject.base.Model;
 
 import com.example.trainproject.base.Constant.CardStatus;
 import com.example.trainproject.base.Util.Wapper.DataTransferObject;
+import com.example.trainproject.base.Util.Wapper.TransferWrapper;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -29,6 +31,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@JsonDeserialize(builder = TransferWrapper.TransferWrapperBuilder.class) // ???
 public class Card implements Serializable , DataTransferObject {
 
   @Id
