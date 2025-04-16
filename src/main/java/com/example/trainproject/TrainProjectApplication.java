@@ -8,6 +8,7 @@ import com.example.trainproject.base.Model.User;
 import com.example.trainproject.base.Util.Wapper.TransferWrapper;
 import com.example.trainproject.base.Service.KafkaProducerService;
 import com.example.trainproject.base.Service.UserService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.javafaker.Faker;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
@@ -72,6 +73,25 @@ public class TrainProjectApplication {
                 "user-service",
                 "notification-service"
             );
+            System.out.println( "**** " + wrapper);
+            System.out.println( "**** " + wrapper.getData().getCardNumber());
+            System.out.println( "**** " + wrapper.getData().getFirstName());
+            System.out.println("************************************************");
+
+//            return TransferWrapper.<DataTransferObject>builder()
+//                .data(data)
+//                .dataType(dataType)
+//                .sourceProject(wrapper.getSourceProject())
+//                .destinationProject(wrapper.getDestinationProject())
+//                .correlationId(wrapper.getCorrelationId())
+//                .timestamp(wrapper.getTimestamp())
+//                .schemaVersion(wrapper.getSchemaVersion())
+//                .build();
+
+//            ObjectMapper xmlMapper = new XmlMapper(); // from jackson-dataformat-xml
+//            String xml = xmlMapper.writeValueAsString(wrapper);
+//            TransferWrapper<?> fromXml = xmlMapper.readValue(xml, TransferWrapper.class);
+
         };
     }
 
