@@ -53,7 +53,7 @@ public class ObjectIntrospector {
   }
 
   public  static void IntrospectorMonitorTotal(Object obj) {
-    IntrospectorMonitor4(obj);
+    IntrospectorMonitor5(obj);
   }
 
   public static void IntrospectorMonitor(Object obj) {
@@ -202,6 +202,66 @@ public class ObjectIntrospector {
           Name: amount, Type: BigDecimal , Value: 649.99
        */
     }
+  }
+
+  public static <T> void IntrospectorMonitor5(T obj) {
+    ObjectMapper objectMapper = new ObjectMapper();
+    TypeFactory typeFactory = objectMapper.getTypeFactory();
+    JavaType javaType = typeFactory.constructType(obj.getClass());
+
+    // Get the BeanDescription which provides information about the class
+    List<BeanPropertyDefinition> properties = objectMapper.getSerializationConfig()
+        .introspect(javaType)
+        .findProperties();
+
+    System.out.println("Class name : " + obj.getClass().getSimpleName());
+    System.out.println("Fields of " + obj.getClass().getSimpleName() + ":");
+    for (BeanPropertyDefinition property : properties) {
+      String fieldName = property.getName();
+      JavaType fieldType = property.getPrimaryType();
+      System.out.print("  Name: " + fieldName + ", Type: " + fieldType.getRawClass().getSimpleName() + " , ");
+
+      try {
+        // Use reflection to get the actual field object
+        Field field = obj.getClass().getDeclaredField(fieldName);
+        // Make private fields accessible
+        field.setAccessible(true);
+        // Get the value of the field
+        Object value = field.get(obj);
+        System.out.println("Value: " + value);
+      } catch (NoSuchFieldException e) {
+        System.err.println("    Error: Field '" + fieldName + "' not found using reflection.");
+      } catch (IllegalAccessException e) {
+        System.err.println("    Error: Could not access field '" + fieldName + "'.");
+      }
+    }
+//    Class name : Card
+//    Fields of Card:
+//    Name: id, Type: Long , Value: null
+//    Name: cardNumber, Type: String , Value: 7000266980
+//    Name: firstName, Type: String , Value: Roosevelt
+//    Name: lastName, Type: String , Value: Klein
+//    Name: pin1, Type: String , Value: 0571100247
+//    Name: pin2, Type: String , Value: 4432305294
+//    Name: user, Type: User , Value: null
+//    Name: status, Type: CardStatus , Value: null
+//    Name: createdAt, Type: ZonedDateTime , Value: null
+//    Name: updatedAt, Type: ZonedDateTime , Value: null
+//    Name: deletedAt, Type: ZonedDateTime , Value: null
+//        **************************
+//        Class name : Order
+//    Fields of Order:
+//    Name: id, Type: Long , Value: null
+//    Name: shortNumber, Type: int , Value: 3
+//    Name: date, Type: ZonedDateTime , Value: 2025-04-13T16:45:56.316-04:00[America/New_York]
+//    Name: user, Type: User , Value: null
+//    Name: totalAmount, Type: double , Value: -42.8999
+//    Name: orderStatus, Type: OrderStatus , Value: PENDING
+//        **************************
+//        Class name : Transaction
+//    Fields of Transaction:
+//    Name: id, Type: UUID , Value: null
+//    Name: amount, Type: BigDecimal , Value: 342.57
   }
 
 
