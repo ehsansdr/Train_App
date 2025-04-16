@@ -43,5 +43,9 @@ public class TransferWrapper<T extends DataTransferObject> {
       data.validate(); // delegate to the data’s validation logic
     }
   }
+
+  public static <T extends DataTransferObject> TransferWrapper<T> of(T data, String source, String dest) {
+    return new TransferWrapper<>(data, source, dest);
+  }
 }
 
