@@ -5,6 +5,7 @@ import com.example.trainproject.base.Constant.Role;
 import com.example.trainproject.base.Model.Card;
 import com.example.trainproject.base.Model.KafkaProduceMessage;
 import com.example.trainproject.base.Model.User;
+import com.example.trainproject.base.Util.Wapper.DataTransferObject;
 import com.example.trainproject.base.Util.Wapper.TransferWrapper;
 import com.example.trainproject.base.Service.KafkaProducerService;
 import com.example.trainproject.base.Service.UserService;
@@ -78,15 +79,15 @@ public class TrainProjectApplication {
             System.out.println( "**** " + wrapper.getData().getFirstName());
             System.out.println("************************************************");
 
-//            return TransferWrapper.<DataTransferObject>builder()
-//                .data(data)
-//                .dataType(dataType)
-//                .sourceProject(wrapper.getSourceProject())
-//                .destinationProject(wrapper.getDestinationProject())
-//                .correlationId(wrapper.getCorrelationId())
-//                .timestamp(wrapper.getTimestamp())
-//                .schemaVersion(wrapper.getSchemaVersion())
-//                .build();
+            TransferWrapper.<DataTransferObject>builder()
+                .data(card)
+                .dataType(card != null ? card.getClass().getName() : null)
+                .sourceProject(wrapper.getSourceProject())
+                .destinationProject(wrapper.getDestinationProject())
+                .correlationId(wrapper.getCorrelationId())
+                .timestamp(wrapper.getTimestamp())
+                .schemaVersion(wrapper.getSchemaVersion())
+                .build();
 
 //            ObjectMapper xmlMapper = new XmlMapper(); // from jackson-dataformat-xml
 //            String xml = xmlMapper.writeValueAsString(wrapper);
