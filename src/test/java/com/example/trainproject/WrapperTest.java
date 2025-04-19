@@ -113,7 +113,6 @@ public class WrapperTest {
     assertTrue(result.getData() instanceof Card);
     Card deserializedCard = (Card) result.getData();
 
-    // Perform assertions on the deserialized data
     assertEquals("Alice", deserializedCard.getFirstName());
     assertEquals("A", result.getSourceProject());
     assertEquals("B", result.getDestinationProject());
