@@ -2,12 +2,15 @@ package com.example.trainproject;
 
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import com.example.trainproject.base.Model.Card;
+import com.example.trainproject.base.Util.Wapper.DataTransferObject;
 import com.example.trainproject.base.Util.Wapper.TransferTypeRegistry;
 import com.example.trainproject.base.Util.Wapper.TransferWrapper;
 import com.example.trainproject.base.Util.Wapper.TransferWrapperSerializer;
@@ -45,7 +48,7 @@ public class WrapperTest {
 
   @Test
   public void testKafkaProducer() throws JsonProcessingException {
-    Card card =cardCreating();
+    Card card = cardCreating();
     TransferWrapper<Card> wrapper = new TransferWrapper<>(
         card,
         "user-service",
@@ -56,7 +59,6 @@ public class WrapperTest {
 
     kafkaTemplate.send(topic, serializedWrapper);
 
-    // Verify that the send method was called
     verify(kafkaTemplate, times(1)).send(eq(topic), eq(serializedWrapper));
   }
 
@@ -73,19 +75,48 @@ public class WrapperTest {
 
   @KafkaListener(topics = "${my.kafka.topic}", groupId = "group-id")
   public void consume(String messageJson) throws Exception {
-    // Deserialize message
     TransferWrapper<?> wrapper = TransferWrapperUtil.fromJsonSafely(messageJson);
 
-    // Handle the deserialized wrapper
     Card card = (Card) wrapper.getData();
     System.out.println("Received card: " + card);
     System.out.println("Received card : " + card.getCardNumber());
 
-    // Add assertions to verify that everything is correct
     assertEquals("123", card.getId());
     assertEquals("Alice", card.getFirstName());
     assertEquals("sourceProject", wrapper.getSourceProject());
     assertEquals("destinationProject", wrapper.getDestinationProject());
+  }
+
+
+  @Test
+  void testSerializationAndDeserialization() throws Exception {
+    Card card = new Card();
+    card.setCardNumber(faker.number().digits(10).toString());
+    card.setFirstName("Alice");
+    card.setLastName(faker.name().lastName());
+    card.setPin1(faker.number().digits(10).toString());
+    card.setPin2(faker.number().digits(10).toString());
+
+    // Wrap the Card object into TransferWrapper
+    TransferWrapper<Card> wrapper = TransferWrapper.of(card, "A", "B");
+
+    // Serialize the wrapper into JSON
+    String json = TransferWrapperUtil.toJson(wrapper);
+
+    // Register the DTO class for safe deserialization
+    TransferTypeRegistry.register(Card.class.getName(), Card.class);
+
+    // Deserialize the JSON back into TransferWrapper
+    TransferWrapper<? extends DataTransferObject> result = TransferWrapperUtil.fromJsonSafely(json);
+
+    assertNotNull(result);
+    assertTrue(result.getData() instanceof Card);
+    Card deserializedCard = (Card) result.getData();
+
+    // Perform assertions on the deserialized data
+    assertEquals("Alice", deserializedCard.getFirstName());
+    assertEquals("A", result.getSourceProject());
+    assertEquals("B", result.getDestinationProject());
   }
 
 }

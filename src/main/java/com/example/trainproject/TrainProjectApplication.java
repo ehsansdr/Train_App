@@ -9,14 +9,17 @@ import com.example.trainproject.base.Util.Wapper.DataTransferObject;
 import com.example.trainproject.base.Util.Wapper.TransferWrapper;
 import com.example.trainproject.base.Service.KafkaProducerService;
 import com.example.trainproject.base.Service.UserService;
+import com.example.trainproject.base.Util.Wapper.TransferWrapperSerializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.javafaker.Faker;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootApplication
@@ -24,7 +27,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @RequiredArgsConstructor
 public class TrainProjectApplication {
 
+    ///KafkaTemplate<String,String> kafkaTemplate = new KafkaTemplate<>(KafkaTemplate.class);
+    @Value("${my.kafka.topic}")
+    String topic = "${my.kafka.topic}";
 
+    ObjectMapper objectMapper;
+
+    Faker faker = new Faker();
     private final PasswordEncoder passwordEncoder;
 
     private MessageConfig messageSource = new MessageConfig();
@@ -57,8 +66,8 @@ public class TrainProjectApplication {
             userService.save(user);
         };
     }
-    @Bean
-    public CommandLineRunner wrapperClass(
+    // @Bean
+    public CommandLineRunner wrapperClass2(
         UserService userService
     ) {
         return args -> {
@@ -95,6 +104,38 @@ public class TrainProjectApplication {
 
         };
     }
+
+    // @Bean
+    public CommandLineRunner wrapperClass(
+        UserService userService
+    ) {
+        return args -> {
+            Card card = cardCreating();
+            TransferWrapper<Card> wrapper = new TransferWrapper<>(
+                card,
+                "user-service",
+                "notification-service"
+            );
+            TransferWrapperSerializer serializer = new TransferWrapperSerializer(objectMapper);
+            String serializedWrapper = serializer.serialize(wrapper);
+
+            /// kafkaTemplate.send(topic, serializedWrapper);
+
+        };
+    }
+
+    private Card cardCreating() {
+        Faker faker = new Faker();
+        Card card = new Card();
+        card.setCardNumber(faker.number().digits(10).toString());
+        card.setFirstName(faker.name().firstName());
+        card.setLastName(faker.name().lastName());
+        card.setPin1(faker.number().digits(10).toString());
+        card.setPin2(faker.number().digits(10).toString());
+        return card;
+    }
+
+
 
 
 }

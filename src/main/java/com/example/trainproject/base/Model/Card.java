@@ -31,7 +31,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@JsonDeserialize(builder = TransferWrapper.TransferWrapperBuilder.class) // ???
 public class Card implements Serializable , DataTransferObject {
 
   @Id
