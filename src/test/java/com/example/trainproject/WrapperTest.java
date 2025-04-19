@@ -118,4 +118,34 @@ public class WrapperTest {
     assertEquals("B", result.getDestinationProject());
   }
 
+  @Test
+  void testSerializationAndDeserialization2() throws Exception {
+    Card card = new Card();
+    card.setCardNumber(faker.number().digits(10).toString());
+    card.setFirstName("Alice");
+    card.setLastName(faker.name().lastName());
+    card.setPin1(faker.number().digits(10).toString());
+    card.setPin2(faker.number().digits(10).toString());
+
+    // Wrap the Card object into TransferWrapper
+    TransferWrapper<Card> wrapper = TransferWrapper.of(card, "A", "B");
+
+    // Serialize the wrapper into JSON
+    String json = TransferWrapperUtil.toJson(wrapper);
+
+    // Register the DTO class for safe deserialization
+    TransferTypeRegistry.register(wrapper.getData().getClass().getTypeName(), wrapper.getData().getClass());
+
+    // Deserialize the JSON back into TransferWrapper
+    TransferWrapper<? extends DataTransferObject> result = TransferWrapperUtil.fromJsonSafely(json);
+
+    assertNotNull(result);
+    assertTrue(result.getData() instanceof Card);
+    Card deserializedCard = (Card) result.getData();
+
+    assertEquals("Alice", deserializedCard.getFirstName());
+    assertEquals("A", result.getSourceProject());
+    assertEquals("B", result.getDestinationProject());
+  }
+
 }

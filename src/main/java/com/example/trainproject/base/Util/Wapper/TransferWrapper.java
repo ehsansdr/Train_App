@@ -42,6 +42,15 @@ public class TransferWrapper<T extends DataTransferObject> {
     this.timestamp = Instant.now();
   }
 
+  public TransferWrapper(T data, String dataType,String sourceProject, String destinationProject) {
+    this(data);
+    this.dataType = dataType;
+    this.sourceProject = sourceProject;
+    this.destinationProject = destinationProject;
+    this.correlationId = UUID.randomUUID().toString();
+    this.timestamp = Instant.now();
+  }
+
   public void validate() {
     if (data != null) {
       data.validate();
@@ -50,6 +59,9 @@ public class TransferWrapper<T extends DataTransferObject> {
 
   public static <T extends DataTransferObject> TransferWrapper<T> of(T data, String source, String destination) {
     return new TransferWrapper<>(data, source, destination);
+  }
+  public static <T extends DataTransferObject> TransferWrapper<T> of(T data, String dataType, String source, String destination) {
+    return new TransferWrapper<>(data, dataType ,source, destination);
   }
 
 }

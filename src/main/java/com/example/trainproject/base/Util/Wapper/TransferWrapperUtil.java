@@ -34,6 +34,8 @@ public class TransferWrapperUtil {
   public static TransferWrapper<? extends DataTransferObject> fromJsonSafely(String json) throws Exception {
     // Safe deserialization using registered DTO type mapping.
     // This should use the TransferDeserializer
+    // This one uses the "dataType" string from the JSON and looks it up using your TransferTypeRegistry
+    // Then it manually instructs the ObjectMapper to parse the data node using the correct subclass
     return new TransferDeserializer(DEFAULT_MAPPER).deserialize(json);
   }
 
