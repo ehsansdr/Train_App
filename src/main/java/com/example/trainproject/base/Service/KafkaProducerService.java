@@ -2,7 +2,11 @@ package com.example.trainproject.base.Service;
 
 
 import com.example.trainproject.base.Model.KafkaProduceMessage;
+import com.example.trainproject.base.Util.Wapper.DataTransferObject;
+import com.example.trainproject.base.Util.Wapper.TransferWrapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,8 +22,12 @@ public class KafkaProducerService {
 
   @Autowired
   private KafkaTemplate<String, Object> kafkaTemplate;
-  @Autowired
-  private ObjectMapper objectMapper;
+
+  // it is important to declare object mapper as it is
+  ObjectMapper objectMapper = new ObjectMapper()
+      .registerModule(new JavaTimeModule())
+      .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+
 
 
   public void sendMessage(String message) {
@@ -56,6 +64,20 @@ public class KafkaProducerService {
   }
 
   public <T> void sendMessage(T message) {
+    kafkaTemplate.send(kafkaTopic, message)
+        .whenComplete((result, ex) -> {
+          if (ex != null) {
+            log.error("❌ Failed to send message: {}", ex.getMessage(), ex);
+          } else {
+            log.info("✅ Message sent successfully to topic: {}, partition: {}, offset: {}",
+                kafkaTopic,
+                result.getRecordMetadata().partition(),
+                result.getRecordMetadata().offset());
+          }
+        });
+  }
+
+  public <T extends DataTransferObject> void sendMessageInWrapper(TransferWrapper<T> message) {
     kafkaTemplate.send(kafkaTopic, message)
         .whenComplete((result, ex) -> {
           if (ex != null) {
