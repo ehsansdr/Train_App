@@ -4,6 +4,7 @@ import com.example.trainproject.base.Model.Card;
 import com.example.trainproject.base.Util.Wapper.TransferTypeRegistry;
 import com.example.trainproject.base.Util.Wapper.TransferWrapper;
 import com.example.trainproject.base.Util.Wapper.TransferWrapperKafkaDeserializer;
+import com.example.trainproject.base.annotatio.Loggable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.annotation.EnableKafka;
@@ -22,6 +23,7 @@ public class KafkaConsumerService {
   }
 
   @KafkaListener(topics = "${my.kafka.topic}", groupId = "${my.kafka.consumer-group-id}")
+  @Loggable
   public void consumeMessage(TransferWrapper<?> wrapper) {
     try {
       // Optional: Register the DTO class for further use
