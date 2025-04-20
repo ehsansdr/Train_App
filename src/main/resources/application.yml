@@ -3,22 +3,23 @@ spring:
     active: postgres
 
   kafka:
-    bootstrap-servers: 192.168.110.243:19091 # Kafka broker address(es)
+    bootstrap-servers: 192.168.110.243:19091 # Kafka broker address
     producer:
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer # Serializer for the key of the Kafka message (String in this case)
-      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer # Serializer for the value of the Kafka message (using Spring's JsonSerializer for JSON)
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: com.example.trainproject.base.Util.Wapper.KafkaTransferWrapperSerializer  # <-- Custom serializer
       properties:
         spring:
           kafka:
             json:
               add:
                 type:
-                  headers: true # This property tells the JsonSerializer to add type information to the message headers
+                  headers: true # Ensures type headers are added to the Kafka message
+
     consumer:
       bootstrap-servers: 192.168.110.243:19091 # Replace with your Kafka brokers
       group-id: ${my.kafka.consumer-group-id}         # Replace with your desired group ID
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer # Deserializer for the key of the Kafka message (String in this case)
-      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer # Deserializer for the value of the Kafka message (using Spring's JsonDeserializer for JSON)
+      value-deserializer: com.example.trainproject.base.Util.Wapper.TransferWrapperKafkaDeserializer # <-- Custom deserializer for the value
       auto-offset-reset: latest             # Or earliest
       enable-auto-commit: true             # Default is true
       auto-commit-interval: 5000           # in milliseconds (default: 5000)
@@ -31,9 +32,8 @@ spring:
             value:
               default:
                 type: com.example.trainproject.base.Model.KafkaProduceMessage # Explicitly set the default type for deserialization if no type header is found
-            trusted:
-              packages: com.example.trainproject.base.Model # Add the package of your KafkaProduceMessage class to allow deserialization
-              # Add other trusted package names here, separated by commas, if you have other models to consume
+          trusted:
+            packages: com.example.trainproject.base.Model, com.example.trainproject.base.Util.Wapper # Add the packages for trusted classes, including your custom ones
 
   liquibase:
     enabled: true

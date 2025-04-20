@@ -1,5 +1,6 @@
 package com.example.trainproject.base.Model;
 
+import com.example.trainproject.base.Util.Wapper.DataTransferObject;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,7 +19,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Data
 @Builder
-public class Transaction implements Serializable {
+public class Transaction implements Serializable , DataTransferObject {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

@@ -31,7 +31,7 @@ public class KafkaMessageController {
     return "Message sent: " + message;
   }
 
-  @KafkaListener(topics = "${my.kafka.topic}", groupId = "group-id")
+  // @KafkaListener(topics = "${my.kafka.topic}", groupId = "group-id")
   public void consume(String messageJson) throws Exception {
     // Deserialize message
     TransferWrapper<?> wrapper = TransferWrapperUtil.fromJsonSafely(messageJson);

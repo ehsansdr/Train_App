@@ -54,7 +54,7 @@ public class WrapperTest {
         "user-service",
         "notification-service"
     );
-    TransferWrapperSerializer serializer = new TransferWrapperSerializer(objectMapper);
+    TransferWrapperSerializer serializer = new TransferWrapperSerializer();
     String serializedWrapper = serializer.serialize(wrapper);
 
     kafkaTemplate.send(topic, serializedWrapper);
@@ -73,7 +73,7 @@ public class WrapperTest {
   }
 
 
-  @KafkaListener(topics = "${my.kafka.topic}", groupId = "group-id")
+  // @KafkaListener(topics = "${my.kafka.topic}", groupId = "group-id")
   public void consume(String messageJson) throws Exception {
     TransferWrapper<?> wrapper = TransferWrapperUtil.fromJsonSafely(messageJson);
 
@@ -130,9 +130,12 @@ public class WrapperTest {
     // Wrap the Card object into TransferWrapper
     TransferWrapper<Card> wrapper = TransferWrapper.of(card, "A", "B");
 
+
     // Serialize the wrapper into JSON
     String json = TransferWrapperUtil.toJson(wrapper);
 
+    kafkaTemplate.send(topic, json);
+    System.out.println(json);
     // Register the DTO class for safe deserialization
     TransferTypeRegistry.register(wrapper.getData().getClass().getTypeName(), wrapper.getData().getClass());
 
