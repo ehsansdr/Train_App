@@ -1,12 +1,17 @@
 package com.example.trainproject;
 
 import com.example.trainproject.base.Config.MessageConfig;
+import com.example.trainproject.base.Constant.CardStatus;
 import com.example.trainproject.base.Constant.Role;
 import com.example.trainproject.base.Model.Card;
 import com.example.trainproject.base.Model.KafkaProduceMessage;
 import com.example.trainproject.base.Model.Transaction;
 import com.example.trainproject.base.Model.User;
+import com.example.trainproject.base.Repository.CardRepository;
+import com.example.trainproject.base.Repository.TransactionRepository;
+import com.example.trainproject.base.Repository.UserRepository;
 import com.example.trainproject.base.Util.Wapper.DataTransferObject;
+import com.example.trainproject.base.Util.Wapper.KafkaTransferWrapperSerializer;
 import com.example.trainproject.base.Util.Wapper.TransferTypeRegistry;
 import com.example.trainproject.base.Util.Wapper.TransferWrapper;
 import com.example.trainproject.base.Service.KafkaProducerService;
@@ -17,12 +22,16 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.github.javafaker.Faker;
 import java.math.BigDecimal;
+import java.net.URI;
+import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -31,6 +40,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @SpringBootApplication
 @EnableFeignClients
 @RequiredArgsConstructor
+@EnableCaching
 public class TrainProjectApplication {
 
     private final KafkaTemplate<String, String> kafkaTemplate;
@@ -84,8 +94,6 @@ public class TrainProjectApplication {
             Faker faker = new Faker();
             Card card = new Card();
             card.setCardNumber(faker.number().digits(10).toString());
-            card.setFirstName(faker.name().firstName());
-            card.setLastName(faker.name().lastName());
             card.setPin1(faker.number().digits(10).toString());
             card.setPin2(faker.number().digits(10).toString());
             TransferWrapper<Card> wrapper = new TransferWrapper<>(
@@ -98,7 +106,6 @@ public class TrainProjectApplication {
             System.out.println("************************************************");
             System.out.println( "**** " + wrapper);
             System.out.println( "**** " + wrapper.getData().getCardNumber());
-            System.out.println( "**** " + wrapper.getData().getFirstName());
             System.out.println("************************************************");
 
             TransferWrapper.<DataTransferObject>builder()
@@ -123,7 +130,7 @@ public class TrainProjectApplication {
         };
     }
 
-    @Bean
+    // @Bean
     public CommandLineRunner wrapperUser(
         UserService userService,
         KafkaProducerService kafkaProducerService
@@ -238,13 +245,65 @@ public class TrainProjectApplication {
         Faker faker = new Faker();
         Card card = new Card();
         card.setCardNumber(faker.number().digits(10).toString());
-        card.setFirstName(faker.name().firstName());
-        card.setLastName(faker.name().lastName());
         card.setPin1(faker.number().digits(10).toString());
         card.setPin2(faker.number().digits(10).toString());
         return card;
     }
 
+    public CommandLineRunner wrapper(
+        KafkaTransferWrapperSerializer kafkaTransferWrapperSerializer
+    ){
+        return args -> {
+            Faker faker = new Faker();
+            Card card = new Card();
+            card.setCardNumber(faker.number().digits(10).toString());
+            card.setPin1(faker.number().digits(10).toString());
+            card.setPin2(faker.number().digits(10).toString());
+
+            TransferWrapper<Card> cardWrappered = new TransferWrapper<>();
+            kafkaTransferWrapperSerializer.serialize(topic, cardWrappered);
+
+        };
+    }
+
+
+    // @Bean
+    public CommandLineRunner transactionCreation(
+        TransactionRepository transactionRepository
+    ){
+        return args -> {
+            for (int i = 0;i < 11;i++){
+            Faker faker = new Faker();
+            Transaction transaction = new Transaction();
+            transaction.setAmount(BigDecimal.valueOf(new Faker().number().randomDouble(2, 10, 1000)));
+            transactionRepository.save(transaction);
+            }
+        };
+    }
+
+    // @Bean
+    public CommandLineRunner cardCreation(
+        CardRepository cardRepository,
+        UserRepository userRepository
+    ){
+        return args -> {
+            User user = new User();
+            Optional<User> userOptional =
+                userRepository.findById(UUID.fromString("9de28244-f164-48fc-92b0-e8c305c0704e")).or(() -> userRepository.findByUsername(faker.name().firstName()));
+            for (int i = 0;i < 11;i++){
+                Faker faker = new Faker();
+
+                Card card = new Card();
+                card.setCardNumber(faker.number().digits(10).toString());
+                card.setPin1(faker.number().digits(4).toString());
+                card.setPin2(faker.number().digits(6).toString());
+                card.setUser(userOptional.orElse(new User()));
+                card.setCardNumber(UUID.randomUUID().toString());
+                card.setStatus(CardStatus.ENABLE);
+                cardRepository.save(card);
+            }
+        };
+    }
 
 
 

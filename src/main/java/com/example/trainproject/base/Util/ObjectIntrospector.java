@@ -36,8 +36,6 @@ public class ObjectIntrospector {
 
     Card obj = new Card();
     obj.setCardNumber(faker.number().digits(10).toString());
-    obj.setFirstName(faker.name().firstName());
-    obj.setLastName(faker.name().lastName());
     obj.setPin1(faker.number().digits(10).toString());
     obj.setPin2(faker.number().digits(10).toString());
     IntrospectorMonitorTotal(obj);

@@ -45,13 +45,6 @@ public class Card implements Serializable , DataTransferObject {
   @NotNull
   private String cardNumber;
 
-  @Column(name = "first_name")
-  @NotNull
-  private String firstName;
-
-  @Column(name = "last_name")
-  @NotNull
-  private String lastName;
 
   @Column(name = "pin1", columnDefinition = "VARCHAR(4)")
   @NotNull

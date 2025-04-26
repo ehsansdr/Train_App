@@ -60,8 +60,6 @@ public class CardService {
     Card card = new Card();
     card.setUser(user);
     card.setCardNumber(PANgenerator.generatePAN(cardRepository.getSequence()));
-    card.setFirstName(cardCreateRequest.getFirstName());
-    card.setLastName(cardCreateRequest.getLastName());
     card.setPin1(argon2HashService.hashValue("0000"));
     card.setPin2("0000");
 

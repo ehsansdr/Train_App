@@ -15,8 +15,6 @@ public class CardMapper {
     }
     CardResponse cardResponce = new CardResponse();
     cardResponce.setCardNumber(card.getCardNumber());
-    cardResponce.setLastName(card.getLastName());
-    cardResponce.setFirstName(card.getFirstName());
     cardResponce.setStatus(card.getStatus());
     return cardResponce;
   }
