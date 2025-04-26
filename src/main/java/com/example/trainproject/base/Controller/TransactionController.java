@@ -1,8 +1,11 @@
 package com.example.trainproject.base.Controller;
 
 import com.example.trainproject.base.Dto.GenericPaginatedResponse;
+import com.example.trainproject.base.Dto.TransactionRequest;
 import com.example.trainproject.base.Model.Transaction;
 import com.example.trainproject.base.Service.TransactionService;
+import java.util.Optional;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
@@ -31,11 +34,22 @@ public class TransactionController extends BaseController {
   }
 
   @PostMapping("/save-transaction")
-  public Transaction saveTransaction(@RequestBody Transaction transaction) {
-
-    return transactionService.saveTransaction(transaction);
+  public Transaction saveTransaction(@RequestBody TransactionRequest transactionRequest) {
+    return transactionService.saveTransaction(transactionRequest);
   }
 
 
+  @GetMapping("/find-transaction/{transactionId}")
+  public Optional<Transaction> getTransactionById(
+    @PathVariable UUID transactionId
+  ){
+    Optional<Transaction> transaction =  transactionService.getTransactionById(transactionId);
+    return transaction;
+  }
+
+//  Situation | Best annotation
+//  Reading a list / object | @Cacheable
+//  Saving/updating something that invalidates list | @CacheEvict
+//  Saving/updating one specific object (by id) | @CachePut
 
 }

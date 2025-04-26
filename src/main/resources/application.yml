@@ -58,6 +58,7 @@ logging:
     org.hibernate.SQL: DEBUG
     org.hibernate.type.descriptor.sql: TRACE
     org.springdoc: DEBUG
+    org.springframework.cache : DEBUG
 
 springdoc:
   swagger-ui:
