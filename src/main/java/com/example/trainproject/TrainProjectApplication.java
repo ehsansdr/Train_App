@@ -10,6 +10,8 @@ import com.example.trainproject.base.Model.User;
 import com.example.trainproject.base.Repository.CardRepository;
 import com.example.trainproject.base.Repository.TransactionRepository;
 import com.example.trainproject.base.Repository.UserRepository;
+import com.example.trainproject.base.Service.NotificationService;
+import com.example.trainproject.base.Service.handler.NotificationProxy;
 import com.example.trainproject.base.Util.Wapper.DataTransferObject;
 import com.example.trainproject.base.Util.Wapper.KafkaTransferWrapperSerializer;
 import com.example.trainproject.base.Util.Wapper.TransferTypeRegistry;
@@ -56,8 +58,11 @@ public class TrainProjectApplication {
     private final PasswordEncoder passwordEncoder;
 
     private MessageConfig messageSource = new MessageConfig();
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         SpringApplication.run(TrainProjectApplication.class, args);
+        NotificationProxy proxy = new NotificationProxy();
+        proxy.setNotificationHandler(new NotificationService());
+        proxy.handle("hi from proxy");
     }
 
     // @Bean
