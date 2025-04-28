@@ -1,4 +1,8 @@
 databaseChangeLog:
+
+  - include:
+      relativeToChangelogFile: true
+      file: /scripts/28-01-changelog.sql
 #  - include:
 #      relativeToChangelogFile: true
 #      file: /scripts/2024-05-18-01-changelog.sql
