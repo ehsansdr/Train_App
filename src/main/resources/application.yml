@@ -1,4 +1,5 @@
 spring:
+
   profiles:
     active: postgres
 
@@ -34,10 +35,18 @@ spring:
                 type: com.example.trainproject.base.Model.KafkaProduceMessage # Explicitly set the default type for deserialization if no type header is found
           trusted:
             packages: com.example.trainproject.base.Model, com.example.trainproject.base.Util.Wapper # Add the packages for trusted classes, including your custom ones
-
   liquibase:
     enabled: true
     change-log: /db/changelog/db.yml
+
+  data:
+    elasticsearch:
+      client:
+        reactive:
+          endpoint: localhost:9200
+      repositories:
+        enabled: true
+
 #  cloud:
 #    vault:
 #      uri: http://127.0.0.1:8200
@@ -46,12 +55,13 @@ spring:
 #        enabled: true
 #        backend: secret
 #        default-context: foo  # Correct path to the secret
+
 #spring.config.import: vault:// # it is essential to have this , if not the application will not find the context in the secret
-
 server:
-  port: 8080
 
+  port: 8080
 logging:
+
   level:
     liquibase: DEBUG
     root: INFO
@@ -59,8 +69,8 @@ logging:
     org.hibernate.type.descriptor.sql: TRACE
     org.springdoc: DEBUG
     org.springframework.cache : DEBUG
-
 springdoc:
+
   swagger-ui:
     enabled: true
     layout: StandaloneLayout
@@ -68,11 +78,11 @@ springdoc:
     deep-linking: true
     url: /v3/api-docs
     css-url: /swagger-ui.css
-
 Train:
-  enableJob: false
 
+  enableJob: false
 my:
+
   kafka:
     topic: "kafka_training_Es"
     consumer-group-id: "my-consumer-group-id"

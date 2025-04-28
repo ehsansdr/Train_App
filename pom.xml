@@ -154,7 +154,16 @@
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
         </dependency>
+<!--&lt;!&ndash;        <dependency>&ndash;&gt;-->
+<!--&lt;!&ndash;            <groupId>org.elasticsearch.client</groupId>&ndash;&gt;-->
+<!--&lt;!&ndash;            <artifactId>elasticsearch-rest-high-level-client</artifactId>&ndash;&gt;-->
+<!--&lt;!&ndash;            <version>7.10.0</version>-->
+<!--&lt;!&ndash;        </dependency> &ndash;&gt;-->
 
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
+        </dependency>
 
     </dependencies>
 
