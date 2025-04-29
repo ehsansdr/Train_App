@@ -39,13 +39,7 @@ spring:
     enabled: true
     change-log: /db/changelog/db.yml
 
-  data:
-    elasticsearch:
-      client:
-        reactive:
-          endpoint: localhost:9200
-      repositories:
-        enabled: true
+
 
 #  cloud:
 #    vault:
