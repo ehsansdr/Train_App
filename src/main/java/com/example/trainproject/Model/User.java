@@ -1,6 +1,7 @@
 package com.example.trainproject.Model;
 
 
+import java.time.ZonedDateTime;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
@@ -15,6 +16,11 @@ public class User {
   private String name;
   private String surname;
   private String email;
+
+
+  private ZonedDateTime createdAt;
+  private ZonedDateTime updatedAt;
+  private ZonedDateTime deletedAt;
 
 
 }
