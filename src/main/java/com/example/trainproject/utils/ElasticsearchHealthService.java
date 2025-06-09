@@ -26,7 +26,7 @@ public class ElasticsearchHealthService {
       boolean health = elasticsearchOperations.indexOps(IndexCoordinates.of("test")).exists();
       log.info("Successfully connected to Uris : {}",  elasticsearchUris);
     } catch (Exception e) {
-      log.error("Failed to connect to Elasticsearch: {}", e.getMessage());
+      log.error("Failed to connect to Uris : {}",  elasticsearchUris);
     }
   }
 }
