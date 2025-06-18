@@ -1,0 +1,12 @@
+package com.example.trainproject.constants;
+
+public enum KycStep {
+  AUTHENTICATION,
+  PHONE_CONFIRMED,
+  CREDIT_SCORE_PENDING,
+  CREDIT_SCORE_REJECTED,
+  CREDIT_SCORE_ACCEPTED,
+  BRANCH_SELECTION,
+  REJECTED,
+  ACCEPTED
+}

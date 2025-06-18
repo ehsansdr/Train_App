@@ -11,8 +11,8 @@ import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
 @Data
-@Document(indexName = "operational_division")
-public class OperationalDivision implements Serializable, Auditable {
+@Document(indexName = "shop")
+public class Shop implements Serializable, Auditable {
 
   @Id
   @Field(type = FieldType.Keyword)
@@ -27,5 +27,5 @@ public class OperationalDivision implements Serializable, Auditable {
 
   @Field(type = FieldType.Date, format = DateFormat.date_time)
   private ZonedDateTime deletedAt;
-}
 
+}

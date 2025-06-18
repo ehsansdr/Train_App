@@ -1,6 +1,7 @@
 package com.example.trainproject.Model;
 
 import com.example.trainproject.callBack.Auditable;
+import java.io.Serializable;
 import java.time.ZonedDateTime;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
@@ -11,9 +12,10 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 
 @Data
 @Document(indexName = "TransactionSource")
-public class TransactionSource implements Auditable {
+public class TransactionSource implements Serializable,Auditable {
 
   @Id
+  @Field(type = FieldType.Keyword)
   private String id;
 
 
