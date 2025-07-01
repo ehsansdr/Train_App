@@ -3,7 +3,7 @@ package com.example.trainproject;
 import com.example.trainproject.Model.KafkaProduceMessage;
 import com.example.trainproject.constant.Channel;
 import com.example.trainproject.constant.NotificationTopic;
-import com.example.trainproject.dto.NotificationKafkaDto;
+import com.example.trainproject.dto.NotificationDto;
 import com.example.trainproject.service.KafkaProducerService;
 import com.example.trainproject.util.KafkaUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -38,6 +38,10 @@ public class TrainProjectApplication {
 
 
   public static void main(String[] args) {
+    System.out.println(System.currentTimeMillis());
+    System.out.println(System.currentTimeMillis());
+    System.out.println(System.currentTimeMillis());
+    System.out.println(System.currentTimeMillis());
     SpringApplication.run(TrainProjectApplication.class, args);
 
   }
@@ -72,16 +76,18 @@ public class TrainProjectApplication {
   // @Bean
   public CommandLineRunner init() {
     return args -> {
+      Faker faker = new Faker();
       for (int i = 0; i < 10; i++) {
-        NotificationKafkaDto notificationKafkaDto = new NotificationKafkaDto();
+        NotificationDto notificationKafkaDto = new NotificationDto();
 
         notificationKafkaDto.setReceiverId(UUID.randomUUID());
         notificationKafkaDto.setNotificationTopic(NotificationTopic.STEP_PROCESSING);
-        notificationKafkaDto.setSendAt(ZonedDateTime.now());
-        notificationKafkaDto.setChannel(Channel.EMAIL);
-        notificationKafkaDto.setMessageBody("hi do you see me");
-        notificationKafkaDto.setContactInfo("what ever");
-        notificationKafkaDto.setSendAt(ZonedDateTime.now());
+//        notificationKafkaDto.setContactInfo("09129494979");
+        notificationKafkaDto.setContactInfo("09128884557");
+        notificationKafkaDto.setChannel(Channel.SMS);
+        notificationKafkaDto.setMessageBody(faker.lorem().paragraph());
+        notificationKafkaDto.setDeliveryDate(ZonedDateTime.now());
+//        notificationKafkaDto.setExpiryDate(ZonedDateTime.now() + ZonedDateTime.);
         try {
           ObjectMapper mapper = new ObjectMapper()
               .registerModule(new JavaTimeModule())
@@ -98,8 +104,8 @@ public class TrainProjectApplication {
                   + notificationKafkaDto.getNotificationTopic());
         }
       }
-
     };
+
 
   }
 

@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package notification;
+
+option java_multiple_files = true;
+option java_package = "ir.barook.notification.proto";
+option java_outer_classname = "NotificationKafkaDtoProto";
+
+enum Channel {
+  UNKNOWN_CHANNEL = 0;
+  SMS = 1;
+  EMAIL = 2;
+  NOTICE = 3;
+  FAX = 4;
+}
+
+enum NotificationTopic {
+  UNKNOWN_TOPIC = 0;
+  ORDER_CLEARING_REMINDER = 1;
+  CREDIT_SCORE_ALLOCATION = 2;
+  STEP_PROCESSING = 3;
+}
+
+message NotificationKafkaDto {
+  string receiver_id = 1;
+  string contact_info = 2;
+  Channel channel = 3;
+  NotificationTopic notification_topic = 4;
+  string message_body = 5;
+  string delivery_date = 6;
+  string expiry_date = 7;
+}

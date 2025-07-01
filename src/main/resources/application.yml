@@ -44,7 +44,7 @@ spring:
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.ByteArraySerializer
     listener:
       concurrency: 3
 
@@ -102,4 +102,4 @@ my:
 
 kafka-info:
   topics:
-    notification: "from-kafka-in-train-app"
+    notification: NOTIFICATION_TOPIC
