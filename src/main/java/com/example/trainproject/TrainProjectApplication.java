@@ -49,6 +49,7 @@ public class TrainProjectApplication {
     @Value("${my.kafka.topic}")
     String topic = "${my.kafka.topic}";
 
+
     // it is important to declare object mapper as it is
     private ObjectMapper objectMapper = new ObjectMapper()
         .registerModule(new JavaTimeModule())
