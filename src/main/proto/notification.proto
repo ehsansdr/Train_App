@@ -21,12 +21,22 @@ enum NotificationTopic {
   STEP_PROCESSING = 3;
 }
 
+enum Language {
+  UNKNOWN_LANGUAGE = 0;
+  PERSIAN = 1;
+  ENGLISH = 2;
+}
+
+
 message NotificationKafkaDto {
   string receiver_id = 1;
   string contact_info = 2;
   Channel channel = 3;
   NotificationTopic notification_topic = 4;
-  string message_body = 5;
-  string delivery_date = 6;
-  string expiry_date = 7;
+  Language language = 5;
+  int32 templateVersion = 6;
+  string message_body = 7;
+  string delivery_date = 8;
+  string expiry_date = 9;
+  map<string, string> template_variables = 10;
 }

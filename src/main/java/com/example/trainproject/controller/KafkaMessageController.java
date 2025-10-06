@@ -9,7 +9,6 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.github.javafaker.Faker;
 import ir.barook.notification.proto.NotificationKafkaDto;
-import ir.barook.notification.proto.NotificationKafkaDtoProto;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -45,7 +45,7 @@ public class KafkaMessageController {
     notificationDto.setNotificationTopic(NotificationTopic.STEP_PROCESSING);
     notificationDto.setContactInfo("09128884557");
     notificationDto.setChannel(Channel.SMS);
-    notificationDto.setMessageBody(faker.lorem().paragraph());
+//    notificationDto.setMessageBody(faker.lorem().paragraph());
     notificationDto.setDeliveryDate(ZonedDateTime.now());
     notificationDto.setExpiryDate(ZonedDateTime.now().plusDays(1));
 
@@ -56,6 +56,20 @@ public class KafkaMessageController {
 
       log.info("Sending protobuf kafka message to topic {}: {}", kafkaTopic, protoMsg);
     } catch (Exception e) {
+      throw new RuntimeException("Failed to send notification", e);
+    }
+    return notificationDto;
+  }
+
+
+  @PostMapping("/generate-kafka-message")
+  public NotificationDto sendMessage(@RequestBody NotificationDto notificationDto) {
+    try {
+      NotificationKafkaDto protoMsg = toProto(notificationDto);
+      kafkaTemplate.send(kafkaTopic, protoMsg.toByteArray());
+      log.info("Sent protobuf Kafka message to topic {}: {}", kafkaTopic, protoMsg);
+    } catch (Exception e) {
+      log.error("Failed to send notification", e);
       throw new RuntimeException("Failed to send notification", e);
     }
     return notificationDto;
@@ -77,14 +91,26 @@ public class KafkaMessageController {
     if (dto.getNotificationTopic() != null) {
       builder.setNotificationTopicValue(dto.getNotificationTopic().ordinal());
     }
-    if (dto.getMessageBody() != null) {
-      builder.setMessageBody(dto.getMessageBody());
-    }
+//    if (dto.getMessageBody() != null) {
+//      builder.setMessageBody(dto.getMessageBody());
+//    }
     if (dto.getDeliveryDate() != null) {
       builder.setDeliveryDate(dto.getDeliveryDate().toString());
     }
     if (dto.getExpiryDate() != null) {
       builder.setExpiryDate(dto.getExpiryDate().toString());
+    }
+
+    if (dto.getTemplateVariables()  != null) {
+      builder.putAllTemplateVariables(dto.getTemplateVariables());
+    }
+
+    if (dto.getTemplateVersion() != null) {
+      builder.setTemplateVersion(dto.getTemplateVersion());
+    }
+
+    if (dto.getLanguage() != null) {
+      builder.setLanguageValue(dto.getLanguage().ordinal());
     }
 
     return builder.build();  // this returns NotificationKafkaDto now matching method return type

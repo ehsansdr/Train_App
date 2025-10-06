@@ -85,7 +85,7 @@ public class TrainProjectApplication {
 //        notificationKafkaDto.setContactInfo("09129494979");
         notificationKafkaDto.setContactInfo("09128884557");
         notificationKafkaDto.setChannel(Channel.SMS);
-        notificationKafkaDto.setMessageBody(faker.lorem().paragraph());
+//        notificationKafkaDto.setMessageBody(faker.lorem().paragraph());
         notificationKafkaDto.setDeliveryDate(ZonedDateTime.now());
 //        notificationKafkaDto.setExpiryDate(ZonedDateTime.now() + ZonedDateTime.);
         try {
